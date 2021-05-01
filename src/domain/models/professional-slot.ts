@@ -3,4 +3,5 @@ export interface ProfessionalSlot {
   professionalId: string
   start: string
   end: string
+  isAvailable: boolean
 }
