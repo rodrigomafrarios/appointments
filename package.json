@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/rodrigomafrarios/appointments#readme",
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.4",
     "@types/jest": "^26.0.23",
+    "@types/mongodb": "^3.6.12",
     "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "eslint": "^7.25.0",
@@ -44,12 +46,15 @@
   },
   "lint-staged": {
     "*.ts": [
-      "eslint --fix",
       "npm run test:staged",
       "git add"
     ]
   },
   "dependencies": {
-    "module-alias": "^2.2.2"
+    "module-alias": "^2.2.2",
+    "mongodb": "^3.6.6"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

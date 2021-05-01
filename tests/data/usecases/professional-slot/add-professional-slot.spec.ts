@@ -1,7 +1,7 @@
 import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
 import { DbAddProfessionalSlot } from '@/data/usecases/professional-slot/db-add-professional-slot'
 import MockDate from 'mockdate'
-import { mockAddProfessionalParams, mockAddProfessionalSlotRepository } from '@/tests/data/mocks/db-professional-slot'
+import { mockAddProfessionalSlotParams, mockAddProfessionalSlotRepository } from '@/tests/data/mocks/db-professional-slot'
 
 interface SutTypes {
   sut: DbAddProfessionalSlot
@@ -28,8 +28,8 @@ describe('AddProfessionalSlot Usecase', () => {
   test('Should call AddProfessionalSlotRepository with correct values', async () => {
     const { sut, addProfessionalSlotRepositoryStub } = makeSut()
     const addProfessionalSlotSpy = jest.spyOn(addProfessionalSlotRepositoryStub, 'add')
-    await sut.add(mockAddProfessionalParams())
-    expect(addProfessionalSlotSpy).toHaveBeenCalledWith(mockAddProfessionalParams())
+    await sut.add(mockAddProfessionalSlotParams())
+    expect(addProfessionalSlotSpy).toHaveBeenCalledWith(mockAddProfessionalSlotParams())
   })
 
   test('Should throw if AddProfessionalSlotRepository throws', async () => {
@@ -38,7 +38,7 @@ describe('AddProfessionalSlot Usecase', () => {
       throw new Error()
     })
 
-    const promise = sut.add(mockAddProfessionalParams())
+    const promise = sut.add(mockAddProfessionalSlotParams())
     await expect(promise).rejects.toThrow()
   })
 })
