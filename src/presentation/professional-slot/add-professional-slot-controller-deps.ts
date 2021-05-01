@@ -1,1 +1,1 @@
-export { HttpRequest, HttpResponse, Controller } from '@/presentation/interfaces'
+export * from '@/presentation/interfaces'
