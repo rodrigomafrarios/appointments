@@ -1,7 +1,7 @@
-import { HttpRequest } from '@/presentation/interfaces/http'
+import { HttpRequest, HttpResponse, Controller } from './add-professional-slot-controller-deps'
 
-export class AddProfessionalSlotController {
-  async handle (httpRequest: HttpRequest): Promise<any> {
+export class AddProfessionalSlotController implements Controller {
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     return {
       statusCode: 400,
       body: new Error('Missing param')
