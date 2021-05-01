@@ -1,4 +1,4 @@
-import { AddProfessionalSlotRepository } from '@/data/interfaces/professional-slot/add-professional-slot-repository'
+import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
 import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
 
 export class DbAddProfessionalSlot {
