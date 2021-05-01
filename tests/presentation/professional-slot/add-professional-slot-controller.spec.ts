@@ -1,6 +1,8 @@
-import { AddProfessionalSlotController } from '@/presentation/professional-slot/add-professional-slot-controller'
+import { AddProfessionalSlotController } from '@/presentation/controllers/professional-slot/add-professional-slot-controller'
 import { Validation } from '@/presentation/interfaces/validation'
 import { HttpRequest } from '@/presentation/interfaces'
+import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
+import { badRequest } from '@/presentation/helpers/http/http-helper'
 import MockDate from 'mockdate'
 
 interface SutTypes {
@@ -49,6 +51,13 @@ describe('AddProfessionalSlotController', () => {
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(makeFakeRequest())
     expect(validateSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+
+  test('Should return 400 if validation fails', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new InvalidParamError('any_field'))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('any_field')))
   })
 
   test('Should return 400 if no professionalId provided', async () => {
