@@ -1,8 +1,8 @@
-import { AddProfessionalAvailabilitySlotController } from '@/presentation/professional-availability-slot/add-professional-availability-slot-controller'
+import { AddProfessionalSlotController } from '@/presentation/professional-slot/add-professional-slot-controller'
 
-describe('AddProfessionalAvailabilitySlotController', () => {
+describe('AddProfessionalSlotController', () => {
   test('Should return 400 if no professionalId provided', async () => {
-    const controller = new AddProfessionalAvailabilitySlotController()
+    const controller = new AddProfessionalSlotController()
     const httpRequest = {
       body: {
         start: new Date().toISOString(),

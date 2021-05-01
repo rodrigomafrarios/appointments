@@ -43,7 +43,7 @@
   },
   "lint-staged": {
     "*.ts": [
-      "eslint --cache --fix",
+      "eslint --fix",
       "npm run test:staged",
       "git add"
     ]
