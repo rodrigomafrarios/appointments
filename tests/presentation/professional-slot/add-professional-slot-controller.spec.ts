@@ -1,40 +1,34 @@
 import { AddProfessionalSlotController } from '@/presentation/controllers/professional-slot/add-professional-slot-controller'
 import { Validation } from '@/presentation/interfaces/validation'
-import { HttpRequest } from '@/presentation/interfaces'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
+import { mockFakeRequest, mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 import { badRequest } from '@/presentation/helpers/http/http-helper'
 import MockDate from 'mockdate'
+import { AddProfessionalSlot, AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
 
 interface SutTypes {
   sut: AddProfessionalSlotController
   validationStub: Validation
+  addProfessionalSlotStub: AddProfessionalSlot
 }
 
-const makeFakeRequest = (): HttpRequest => {
-  return {
-    body: {
-      professionalId: 'any-professional-id',
-      start: new Date().toISOString(),
-      end: new Date().toISOString()
+const mockAddProfessionalSlot = (): AddProfessionalSlot => {
+  class AddProfessionalSlotStub implements AddProfessionalSlot {
+    async add (params: AddProfessionalSlotParams): Promise<void> {
+      return await Promise.resolve(undefined)
     }
   }
-}
-
-const makeValidator = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error | undefined {
-      return undefined
-    }
-  }
-  return new ValidationStub()
+  return new AddProfessionalSlotStub()
 }
 
 const makeSut = (): SutTypes => {
-  const validationStub = makeValidator()
-  const sut = new AddProfessionalSlotController(validationStub)
+  const validationStub = mockValidator()
+  const addProfessionalSlotStub = mockAddProfessionalSlot()
+  const sut = new AddProfessionalSlotController(validationStub, addProfessionalSlotStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    addProfessionalSlotStub
   }
 }
 
@@ -49,55 +43,21 @@ describe('AddProfessionalSlotController', () => {
   test('Should call validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
-    await sut.handle(makeFakeRequest())
-    expect(validateSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+    await sut.handle(mockFakeRequest())
+    expect(validateSpy).toHaveBeenCalledWith(mockFakeRequest().body)
   })
 
   test('Should return 400 if validation fails', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new InvalidParamError('any_field'))
-    const httpResponse = await sut.handle(makeFakeRequest())
+    const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse).toEqual(badRequest(new InvalidParamError('any_field')))
   })
 
-  test('Should return 400 if no professionalId provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        start: new Date().toISOString(),
-        end: new Date().toISOString()
-      }
-    }
-
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-  })
-
-  test('Should return 400 if no start parameter provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        professionalId: 'any-professional-id',
-        end: new Date().toISOString()
-      }
-    }
-
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param'))
-  })
-
-  test('Should return 400 if no end parameter provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        professionalId: 'any-professional-id',
-        start: new Date().toISOString()
-      }
-    }
-
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param'))
+  test('Should call addProfessionalSlot with correct values', async () => {
+    const { sut, addProfessionalSlotStub } = makeSut()
+    const addProfessionalSlotSpy = jest.spyOn(addProfessionalSlotStub, 'add')
+    await sut.handle(mockFakeRequest())
+    expect(addProfessionalSlotSpy).toHaveBeenCalledWith(mockFakeRequest().body)
   })
 })
