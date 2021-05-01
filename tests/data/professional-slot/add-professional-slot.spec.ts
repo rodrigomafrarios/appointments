@@ -49,4 +49,20 @@ describe('AddProfessionalSlot Usecase', () => {
       isAvailable: true
     })
   })
+
+  test('Should throw if AddProfessionalSlotRepository throws', async () => {
+    const { sut, addProfessionalSlotRepositoryStub } = makeSut()
+    jest.spyOn(addProfessionalSlotRepositoryStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const promise = sut.add({
+      professionalId: 'any-professional-id',
+      start: new Date().toISOString(),
+      end: new Date().toISOString(),
+      isAvailable: true
+    })
+
+    await expect(promise).rejects.toThrow()
+  })
 })
