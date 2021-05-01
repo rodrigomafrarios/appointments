@@ -2,7 +2,7 @@ import { AddProfessionalSlotController } from '@/presentation/controllers/profes
 import { Validation } from '@/presentation/interfaces/validation'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
 import { mockFakeRequest, mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
-import { badRequest, created } from '@/presentation/helpers/http/http-helper'
+import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
 import MockDate from 'mockdate'
 import { AddProfessionalSlot, AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
 
@@ -59,6 +59,15 @@ describe('AddProfessionalSlotController', () => {
     const addProfessionalSlotSpy = jest.spyOn(addProfessionalSlotStub, 'add')
     await sut.handle(mockFakeRequest())
     expect(addProfessionalSlotSpy).toHaveBeenCalledWith(mockFakeRequest().body)
+  })
+
+  test('Should return 500 if addProfessionalSlot throws', async () => {
+    const { sut, addProfessionalSlotStub } = makeSut()
+    jest.spyOn(addProfessionalSlotStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 201 on success', async () => {

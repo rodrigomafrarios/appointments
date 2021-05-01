@@ -13,3 +13,10 @@ export const created = (): HttpResponse => {
     body: null
   }
 }
+
+export const serverError = (error: Error): HttpResponse => {
+  return {
+    statusCode: 500,
+    body: error
+  }
+}
