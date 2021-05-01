@@ -1,5 +1,5 @@
 import { AddProfessionalSlot } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, created } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, HttpResponse, Controller, Validation } from './add-professional-slot-controller-deps'
 
 export class AddProfessionalSlotController implements Controller {
@@ -18,9 +18,6 @@ export class AddProfessionalSlotController implements Controller {
 
     await this.addProfessionalSlot.add(body)
 
-    return {
-      statusCode: 400,
-      body: new Error('Missing param')
-    }
+    return created()
   }
 }
