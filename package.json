@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:staged": "npm run test",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "jest --passWithNoTests",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:ci": "npm test -- --coverage",
+    "test:staged": "npm test -- --findRelatedTests",
     "prepare": "husky install",
     "add:lint-staged": "npx mrm lint-staged",
     "hooks:pre-commit": "npm run add:lint-staged && npx husky add .husky/pre-commit 'npx lint-staged'",
@@ -44,5 +47,8 @@
       "npm run test:staged",
       "git add"
     ]
+  },
+  "dependencies": {
+    "module-alias": "^2.2.2"
   }
 }
