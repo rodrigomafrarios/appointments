@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/rodrigomafrarios/appointments/issues"
   },
-  "homepage": "https://github.com/rodrigomafrarios/appointments#readme"
+  "homepage": "https://github.com/rodrigomafrarios/appointments#readme",
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.1.0"
+  }
 }
