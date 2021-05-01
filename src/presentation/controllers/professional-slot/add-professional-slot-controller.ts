@@ -10,14 +10,19 @@ export class AddProfessionalSlotController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { body } = httpRequest
+      const { body, params } = httpRequest
       const error = await this.validation.validate(body)
 
       if (error != null) {
         return badRequest(error)
       }
 
-      await this.addProfessionalSlot.add(body)
+      await this.addProfessionalSlot.add({
+        professionalId: params.id,
+        start: body.start,
+        end: body.end,
+        isAvailable: true
+      })
 
       return created()
     } catch (error) {
