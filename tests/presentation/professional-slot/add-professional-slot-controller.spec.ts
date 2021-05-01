@@ -25,6 +25,20 @@ describe('AddProfessionalSlotController', () => {
 
     const httpResponse = await controller.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: start'))
+    expect(httpResponse.body).toEqual(new Error('Missing param'))
+  })
+
+  test('Should return 400 if no end parameter provided', async () => {
+    const controller = new AddProfessionalSlotController()
+    const httpRequest = {
+      body: {
+        professionalId: 'any-professional-id',
+        start: new Date().toISOString()
+      }
+    }
+
+    const httpResponse = await controller.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new Error('Missing param'))
   })
 })

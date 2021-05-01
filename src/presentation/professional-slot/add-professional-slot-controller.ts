@@ -1,8 +1,10 @@
+import { HttpRequest } from '@/presentation/interfaces/http'
+
 export class AddProfessionalSlotController {
-  async handle (httpRequest: any): Promise<any> {
+  async handle (httpRequest: HttpRequest): Promise<any> {
     return {
       statusCode: 400,
-      body: new Error('Missing param: start')
+      body: new Error('Missing param')
     }
   }
 }
