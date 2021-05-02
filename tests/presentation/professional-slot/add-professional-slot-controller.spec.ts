@@ -5,8 +5,11 @@ import { mockFakeRequest, mockValidator } from '@/tests/presentation/mocks/mock-
 import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
 import MockDate from 'mockdate'
 import { AddProfessionalSlot, AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
+import { InvalidAvailabilityPeriodError } from '@/presentation/errors/invalid-availability-period-error'
+import { InvalidSlotError } from '@/presentation/errors/invalid-slot-error'
+import { MissingParamError } from '@/presentation/errors/missing-param-error'
 
-interface SutTypes {
+type SutTypes = {
   sut: AddProfessionalSlotController
   validationStub: Validation
   addProfessionalSlotStub: AddProfessionalSlot
@@ -47,11 +50,38 @@ describe('AddProfessionalSlotController', () => {
     expect(validateSpy).toHaveBeenCalledWith(mockFakeRequest().body)
   })
 
-  test('Should return 400 if validation fails', async () => {
+  test('Should return 400 if validation fails on a required field', async () => {
     const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockResolvedValueOnce(new InvalidParamError('any_field'))
+    jest.spyOn(validationStub, 'validate').mockResolvedValueOnce(new MissingParamError('any_field'))
     const httpResponse = await sut.handle(mockFakeRequest())
-    expect(httpResponse).toEqual(badRequest(new InvalidParamError('any_field')))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
+  })
+
+  test('Should return 400 if validation fails on invalid availability period', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate')
+    .mockResolvedValueOnce(new InvalidAvailabilityPeriodError(new Date().toISOString(), new Date().toISOString()))
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse)
+    .toEqual(badRequest(new InvalidAvailabilityPeriodError(new Date().toISOString(), new Date().toISOString())))
+  })
+
+  test('Should return 400 if validation fails on invalid param', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate')
+    .mockResolvedValueOnce(new InvalidParamError('any_param'))
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse)
+    .toEqual(badRequest(new InvalidParamError('any_param')))
+  })
+
+  test('Should return 400 if validation fails on invalid slot', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate')
+    .mockResolvedValueOnce(new InvalidSlotError('2021-05-01T21:00:00.000Z', '2021-05-01T23:00:00.000Z'))
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse)
+    .toEqual(badRequest(new InvalidSlotError('2021-05-01T21:00:00.000Z', '2021-05-01T23:00:00.000Z')))
   })
 
   test('Should call addProfessionalSlot with correct values', async () => {
