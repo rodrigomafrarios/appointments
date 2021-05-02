@@ -1,6 +1,6 @@
 import { AddBook, AddBookParams } from '@/domain/usecases/book/add-book/add-book'
 import { AddBookController } from '@/presentation/controllers/book/add-book/add-book-controller'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, Validation } from '@/presentation/interfaces'
 import { mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 
@@ -61,5 +61,12 @@ describe('AddBookController', () => {
     const addBookSpy = jest.spyOn(addBookStub, 'add')
     await sut.handle(mockFakeRequest())
     expect(addBookSpy).toHaveBeenCalledWith(mockFakeRequest().body)
+  })
+
+  test('Should throw if AddBook throws', async () => {
+    const { sut, addBookStub } = makeSut()
+    jest.spyOn(addBookStub, 'add').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
