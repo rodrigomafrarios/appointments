@@ -23,4 +23,14 @@ describe('LoadProfessionalSlots Usecase', () => {
     await sut.loadByProfessionalId('any-id')
     expect(loadProfessionalSlotsSpy).toHaveBeenCalledWith('any-id')
   })
+
+  test('Should throw if LoadProfessionalSlotsRepository throws', async () => {
+    const { sut, loadProfessionalSlotsRepositoryStub } = makeSut()
+    jest.spyOn(loadProfessionalSlotsRepositoryStub, 'loadByProfessionalId').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const promise = sut.loadByProfessionalId('any-id')
+    await expect(promise).rejects.toThrow()
+  })
 })
