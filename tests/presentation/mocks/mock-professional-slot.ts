@@ -12,10 +12,11 @@ export const mockValidator = (): Validation => {
 export const mockFakeRequest = (): HttpRequest => {
   return {
     body: {
-      professionalId: 'any-professional-id',
       start: new Date().toISOString(),
       end: new Date().toISOString()
     },
-    params: '123'
+    params: {
+      id: '123'
+    }
   }
 }
