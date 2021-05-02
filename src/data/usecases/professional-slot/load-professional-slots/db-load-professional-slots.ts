@@ -6,7 +6,7 @@ export class DbLoadProfessionalSlots implements LoadProfessionalSlots {
   constructor (private readonly loadProfessionalSlotsRepository: LoadProfessionalSlotsRepository) {}
 
   async loadByProfessionalId (id: string): Promise<ProfessionalSlot[]> {
-    await this.loadProfessionalSlotsRepository.loadByProfessionalId(id)
-    return Promise.resolve([])
+    const professionalSlots = await this.loadProfessionalSlotsRepository.loadByProfessionalId(id)
+    return professionalSlots
   }
 }

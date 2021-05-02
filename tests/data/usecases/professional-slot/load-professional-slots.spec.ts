@@ -1,6 +1,7 @@
 import { LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
-import { mockLoadProfessionalSlotsRepository } from '@/tests/data/mocks/db-professional-slot'
+import { mockLoadProfessionalSlotsRepository, mockProfessionalSlot } from '@/tests/data/mocks/db-professional-slot'
 import { DbLoadProfessionalSlots } from '@/data/usecases/professional-slot/load-professional-slots/db-load-professional-slots'
+import { ProfessionalSlot } from '@/domain/models/professional-slot'
 
 interface SutTypes {
   sut: DbLoadProfessionalSlots
@@ -32,5 +33,16 @@ describe('LoadProfessionalSlots Usecase', () => {
 
     const promise = sut.loadByProfessionalId('any-id')
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return professional slots', async () => {
+    const { sut, loadProfessionalSlotsRepositoryStub } = makeSut()
+    const professionalSlots: ProfessionalSlot[] = []
+    professionalSlots.push(mockProfessionalSlot())
+    jest.spyOn(loadProfessionalSlotsRepositoryStub, 'loadByProfessionalId')
+    .mockResolvedValueOnce(professionalSlots)
+
+    const results = await sut.loadByProfessionalId('any-id')
+    expect(results).toEqual(professionalSlots)
   })
 })
