@@ -1,6 +1,7 @@
 import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
+import { LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
 
 export const mockProfessionalSlot = (): ProfessionalSlot => {
   return {
@@ -28,4 +29,15 @@ export const mockAddProfessionalSlotRepository = (): AddProfessionalSlotReposito
     }
   }
   return new AddProfessionalSlotRepositoryStub()
+}
+
+export const mockLoadProfessionalSlotsRepository = (): LoadProfessionalSlotsRepository => {
+  class LoadProfessionalSlotsRepositoryStub implements LoadProfessionalSlotsRepository {
+    async loadByProfessionalId (id: string): Promise<ProfessionalSlot[]> {
+      const professionalSlots: ProfessionalSlot[] = []
+      professionalSlots.push(mockProfessionalSlot())
+      return Promise.resolve(professionalSlots)
+    }
+  }
+  return new LoadProfessionalSlotsRepositoryStub()
 }
