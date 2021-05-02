@@ -1,5 +1,5 @@
 import { AddBook } from '@/domain/usecases/book/add-book/add-book'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
 
 export class AddBookController implements Controller {
@@ -15,10 +15,7 @@ export class AddBookController implements Controller {
         return badRequest(error)
       }
       await this.addBook.add(body)
-      return {
-        statusCode: 400,
-        body: null
-      }
+      return created()
     } catch (error) {
       return serverError(error)
     }

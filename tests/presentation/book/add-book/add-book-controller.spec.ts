@@ -1,6 +1,6 @@
 import { AddBook, AddBookParams } from '@/domain/usecases/book/add-book/add-book'
 import { AddBookController } from '@/presentation/controllers/book/add-book/add-book-controller'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, Validation } from '@/presentation/interfaces'
 import { mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 
@@ -68,5 +68,11 @@ describe('AddBookController', () => {
     jest.spyOn(addBookStub, 'add').mockRejectedValueOnce(new Error())
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 201 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse).toEqual(created())
   })
 })
