@@ -1,7 +1,7 @@
 import { Validation } from '@/presentation/interfaces'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
-import { InvalidSlotError } from '../errors/invalid-slot-error'
-import { InvalidAvailabilityPeriodError } from '../errors/invalid-availability-period-error'
+import { InvalidSlotError } from '../../errors/invalid-slot-error'
+import { InvalidAvailabilityPeriodError } from '../../errors/invalid-availability-period-error'
 
 export class SlotValidation implements Validation {
   async validate (params: any): Promise<Error | undefined> {
