@@ -31,8 +31,8 @@ describe('POST /professional/:professional-id/availability-slot', () => {
     await request(app)
     .post(`/api/professional/${id}/availability-slot`)
     .send({
-      start: new Date().toISOString(),
-      end: new Date().toISOString(),
+      start: "2021-05-01T22:00:00.000Z",
+      end: "2021-05-01T23:00:00.000Z"
     })
     .expect(201)
   })
