@@ -1,4 +1,5 @@
 import { AddBookController } from '@/presentation/controllers/book/add-book/add-book-controller'
+import { badRequest } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, Validation } from '@/presentation/interfaces'
 import { mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 
@@ -33,5 +34,12 @@ describe('AddBookController', () => {
     const validationSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(mockFakeRequest())
     expect(validationSpy).toHaveBeenCalledWith(mockFakeRequest().body)
+  })
+
+  test('Should return 400 if validations fails', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockResolvedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse).toEqual(badRequest(new Error()))
   })
 })
