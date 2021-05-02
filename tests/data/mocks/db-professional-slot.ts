@@ -15,8 +15,8 @@ export const mockProfessionalSlot = (): ProfessionalSlot => {
 export const mockAddProfessionalSlotParams = (): AddProfessionalSlotParams => {
   return {
     professionalId: 'any-professional-id',
-    start: new Date().toISOString(),
-    end: new Date().toISOString(),
+    start: '2021-05-01T19:30:00.000Z',
+    end: '2021-05-01T20:30:00.000Z',
     isAvailable: true
   }
 }
