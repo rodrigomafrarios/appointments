@@ -6,6 +6,5 @@ export class DbAddBook implements AddBook {
 
   async add (params: AddBookParams): Promise<void> {
     await this.addBookRepository.add(params)
-    return Promise.resolve(undefined)
   }
 }

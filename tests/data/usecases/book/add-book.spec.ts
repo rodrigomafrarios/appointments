@@ -53,4 +53,11 @@ describe('AddBook Usecase', () => {
     await sut.add(mockAddBookParams())
     expect(addBookRepositorySpy).toHaveBeenCalledWith(mockAddBookParams())
   })
+
+  test('Should throw if AddBookRepository throws', async () => {
+    const { sut, addBookRepositoryStub } = makeSut()
+    jest.spyOn(addBookRepositoryStub, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockAddBookParams())
+    await expect(promise).rejects.toThrow()
+  })
 })
