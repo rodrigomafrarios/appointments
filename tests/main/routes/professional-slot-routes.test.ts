@@ -58,9 +58,21 @@ describe('GET /professional/:id/availability-slots', () => {
     .expect(200)
   })
 
-  test('Shoul return 400 if a wrong professional id provided ', async () => {
+  test('Should return 400 if a wrong professional id provided ', async () => {
     await request(app)
     .get(`/api/professional/123/availability-slots`)
     .expect(400)
+  })
+
+  test('Should return 204 if no content', async () => {
+    const results = await professionalsCollection.insertOne({
+      name: 'Rodrigo Mafra',
+      telefone: '11999999999'
+    })
+    const id = results.ops[0]._id
+
+    await request(app)
+    .get(`/api/professional/${id}/availability-slots`)
+    .expect(204)
   })
 })
