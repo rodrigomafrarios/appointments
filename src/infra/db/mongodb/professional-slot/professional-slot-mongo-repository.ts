@@ -15,6 +15,14 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
     const result = await collection.insertOne(data)
     return result && MongoHelper.map(result.ops[0]) 
   }
+  async loadByProfessionalId (id: string): Promise<ProfessionalSlot[]> {
+    const collection = await MongoHelper.getCollection('professional-availability-slots')
+    const results = await collection.find({
+      professionalId: new ObjectId(id)
+    })
+    .toArray()
+    return MongoHelper.mapCollection(results) 
+  }
   async loadByProfessionalIdAndPeriod (data: AddProfessionalSlotParams): Promise<ProfessionalSlot> {
     const collection = await MongoHelper.getCollection('professional-availability-slots')
     const result = await collection.findOne({

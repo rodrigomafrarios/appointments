@@ -10,7 +10,7 @@ const makeSut = (): ProfessionalSlotMongoRepository => {
   return new ProfessionalSlotMongoRepository()
 }
 
-describe('AddProfessionalSlotMongoRepository', () => {
+describe('ProfessionalSlotMongoRepository', () => {
   beforeAll(async () => {
 		process.env.MONGO_URL = 'mongodb://localhost:27017/jest'
 		await MongoHelper.connect(process.env.MONGO_URL)
@@ -40,4 +40,20 @@ describe('AddProfessionalSlotMongoRepository', () => {
 			expect(slot.isAvailable).toBe(true)
     })
   })
+
+	describe('loadByProfessionalId()', () => {
+		test('Should load availability slots of professional', async () => {
+			const sut = makeSut()
+			const professional = await professionalsCollection.insertOne({
+				name: 'Rodrigo Mafra',
+				telefone: '11999999999'
+			})
+			const params = Object.assign({}, mockAddProfessionalSlotParams(), { professionalId: professional.ops[0]._id })
+      await sut.add(params)
+
+			const slots = await sut.loadByProfessionalId(params.professionalId)
+			expect(slots).toBeTruthy()
+			expect(slots.length).toBe(1)
+		})
+	})
 })
