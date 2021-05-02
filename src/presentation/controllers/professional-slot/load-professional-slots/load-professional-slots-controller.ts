@@ -1,5 +1,5 @@
 import { LoadProfessionalSlots } from '@/domain/usecases/professional-slot/load-professional-slots/load-professional-slots'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, ok } from '@/presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
 
 export class LoadProfessionalSlotsController implements Controller {
@@ -18,11 +18,8 @@ export class LoadProfessionalSlotsController implements Controller {
       return badRequest(error)
     }
 
-    await this.loadProfessionalSlots.loadByProfessionalId(params.id)
+    const professionalSlots = await this.loadProfessionalSlots.loadByProfessionalId(params.id)
 
-    return {
-      statusCode: 400,
-      body: null
-    }
+    return ok(professionalSlots)
   }
 }
