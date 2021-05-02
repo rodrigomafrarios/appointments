@@ -49,7 +49,7 @@ describe('AddProfessionalSlotController', () => {
 
   test('Should return 400 if validation fails', async () => {
     const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new InvalidParamError('any_field'))
+    jest.spyOn(validationStub, 'validate').mockResolvedValueOnce(new InvalidParamError('any_field'))
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse).toEqual(badRequest(new InvalidParamError('any_field')))
   })
@@ -58,7 +58,12 @@ describe('AddProfessionalSlotController', () => {
     const { sut, addProfessionalSlotStub } = makeSut()
     const addProfessionalSlotSpy = jest.spyOn(addProfessionalSlotStub, 'add')
     await sut.handle(mockFakeRequest())
-    expect(addProfessionalSlotSpy).toHaveBeenCalledWith(mockFakeRequest().body)
+    const httpRequest = mockFakeRequest()
+    expect(addProfessionalSlotSpy).toHaveBeenCalledWith({ 
+      ...httpRequest.body,
+      professionalId: httpRequest.params.id,
+      isAvailable: true
+    })
   })
 
   test('Should return 500 if addProfessionalSlot throws', async () => {

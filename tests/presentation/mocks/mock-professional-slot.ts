@@ -2,7 +2,7 @@ import { HttpRequest, Validation } from '@/presentation/interfaces'
 
 export const mockValidator = (): Validation => {
   class ValidationStub implements Validation {
-    validate (input: any): Error | undefined {
+    async validate (input: any): Promise<Error | undefined> {
       return undefined
     }
   }
@@ -15,6 +15,7 @@ export const mockFakeRequest = (): HttpRequest => {
       professionalId: 'any-professional-id',
       start: new Date().toISOString(),
       end: new Date().toISOString()
-    }
+    },
+    params: '123'
   }
 }
