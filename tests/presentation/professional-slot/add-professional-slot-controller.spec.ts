@@ -1,4 +1,4 @@
-import { AddProfessionalSlotController } from '@/presentation/controllers/professional-slot/add-professional-slot-controller'
+import { AddProfessionalSlotController } from '@/presentation/controllers/professional-slot/add-professional-slot/add-professional-slot-controller'
 import { Validation } from '@/presentation/interfaces/validation'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
 import { mockFakeRequest, mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
