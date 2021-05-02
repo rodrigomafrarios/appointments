@@ -1,9 +1,9 @@
-import { mockFakeRequest, mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
+import { mockFakeRequest, mockFakeResponse, mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 import { Validation } from '@/presentation/interfaces'
 import { LoadProfessionalSlotsController } from '@/presentation/controllers/professional-slot/load-professional-slots/load-professional-slots-controller'
 import MockDate from 'mockdate'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
-import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, ok, serverError, noContent } from '@/presentation/helpers/http/http-helper'
 import { LoadProfessionalSlots } from '@/domain/usecases/professional-slot/load-professional-slots/load-professional-slots'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 
@@ -71,10 +71,18 @@ describe('LoadProfessionalSlotsController', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('Should return 200 on success', async () => {
+  test('Should return 204 if loadProfessionalSlots returns empty', async () => {
     const { sut, loadProfessionalSlotsStub } = makeSut()
     jest.spyOn(loadProfessionalSlotsStub, 'loadByProfessionalId').mockResolvedValueOnce([])
     const httpResponse = await sut.handle(mockFakeRequest())
-    expect(httpResponse).toEqual(ok([]))
+    expect(httpResponse).toEqual(noContent())
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut, loadProfessionalSlotsStub } = makeSut()
+    jest.spyOn(loadProfessionalSlotsStub, 'loadByProfessionalId')
+    .mockResolvedValueOnce(mockFakeResponse().body)
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse).toEqual(ok(mockFakeResponse().body))
   })
 })

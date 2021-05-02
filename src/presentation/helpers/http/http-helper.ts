@@ -14,6 +14,13 @@ export const created = (): HttpResponse => {
   }
 }
 
+export const noContent = (): HttpResponse => {
+	return {
+		statusCode: 204,
+		body: null
+	}
+}
+
 export const ok = (data: any): HttpResponse => {
 	return {
 		statusCode: 200,

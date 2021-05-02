@@ -1,4 +1,4 @@
-import { HttpRequest, Validation } from '@/presentation/interfaces'
+import { HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
 
 export const mockValidator = (): Validation => {
   class ValidationStub implements Validation {
@@ -18,5 +18,19 @@ export const mockFakeRequest = (): HttpRequest => {
     params: {
       id: '123'
     }
+  }
+}
+
+export const mockFakeResponse = (): HttpResponse => {
+  return {
+    statusCode: 200,
+    body: [{
+        id: 'any-id',
+        professionalId: 'any-professional-id',
+        start: '2021-05-01T19:30:00.000Z',
+        end: '2021-05-01T20:30:00.000Z',
+        isAvailable: true
+      }
+    ]
   }
 }
