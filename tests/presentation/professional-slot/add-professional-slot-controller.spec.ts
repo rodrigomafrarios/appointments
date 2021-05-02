@@ -47,7 +47,10 @@ describe('AddProfessionalSlotController', () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(mockFakeRequest())
-    expect(validateSpy).toHaveBeenCalledWith(mockFakeRequest().body)
+    expect(validateSpy).toHaveBeenCalledWith({
+      ...mockFakeRequest().body,
+      id: mockFakeRequest().params.id
+    })
   })
 
   test('Should return 400 if validation fails on a required field', async () => {
