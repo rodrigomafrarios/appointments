@@ -3,7 +3,7 @@ import { Validation } from '@/presentation/interfaces'
 import { LoadProfessionalSlotsController } from '@/presentation/controllers/professional-slot/load-professional-slots/load-professional-slots-controller'
 import MockDate from 'mockdate'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
-import { badRequest, ok } from '@/presentation/helpers/http/http-helper'
+import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { LoadProfessionalSlots } from '@/domain/usecases/professional-slot/load-professional-slots/load-professional-slots'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 
@@ -62,6 +62,13 @@ describe('LoadProfessionalSlotsController', () => {
     const loadProfessionalSlotsSpy = jest.spyOn(loadProfessionalSlotsStub, 'loadByProfessionalId')
     await sut.handle(mockFakeRequest())
     expect(loadProfessionalSlotsSpy).toHaveBeenCalledWith(mockFakeRequest().params.id)
+  })
+
+  test('Should throw if loadProfessionalSlots throws', async () => {
+    const { sut, loadProfessionalSlotsStub } = makeSut()
+    jest.spyOn(loadProfessionalSlotsStub, 'loadByProfessionalId').mockRejectedValueOnce(new Error())
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 200 on success', async () => {
