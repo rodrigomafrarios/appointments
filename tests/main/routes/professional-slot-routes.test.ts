@@ -57,4 +57,10 @@ describe('GET /professional/:id/availability-slots', () => {
     .get(`/api/professional/${id}/availability-slots`)
     .expect(200)
   })
+
+  test('Shoul return 400 if a wrong professional id provided ', async () => {
+    await request(app)
+    .get(`/api/professional/123/availability-slots`)
+    .expect(400)
+  })
 })
