@@ -5,8 +5,8 @@ import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
 export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepository {
   async add (data: AddProfessionalSlotParams): Promise<ProfessionalSlot> {
-    const collection = await MongoHelper.getCollection('professional-availability-slot')
+    const collection = await MongoHelper.getCollection('professional-availability-slots')
 		const result = await collection.insertOne(data)
-		return MongoHelper.map(result.ops[0])
+		return result && MongoHelper.map(result.ops[0])
   }
 }

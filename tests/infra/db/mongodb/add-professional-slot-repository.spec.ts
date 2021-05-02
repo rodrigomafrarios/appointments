@@ -18,7 +18,7 @@ describe('AddProfessionalSlotMongoRepository', () => {
 		await MongoHelper.disconnect()
 	})
 	beforeEach(async () => {
-		collection = await MongoHelper.getCollection('professional-availability-slot')
+		collection = await MongoHelper.getCollection('professional-availability-slots')
 		await collection.deleteMany({})
 	})
   describe('add()', () => {
