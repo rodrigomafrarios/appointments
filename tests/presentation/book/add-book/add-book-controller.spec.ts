@@ -1,3 +1,4 @@
+import { AddBook, AddBookParams } from '@/domain/usecases/book/add-book/add-book'
 import { AddBookController } from '@/presentation/controllers/book/add-book/add-book-controller'
 import { badRequest } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, Validation } from '@/presentation/interfaces'
@@ -6,14 +7,26 @@ import { mockValidator } from '@/tests/presentation/mocks/mock-professional-slot
 type SutTypes = {
   sut: AddBookController
   validationStub: Validation
+  addBookStub: AddBook
+}
+
+const makeAddBookStub = (): AddBook => {
+  class AddBookStub implements AddBook {
+    async add (params: AddBookParams): Promise<void> {
+      return undefined
+    }
+  }
+  return new AddBookStub()
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidator()
-  const sut = new AddBookController(validationStub)
+  const addBookStub = makeAddBookStub()
+  const sut = new AddBookController(validationStub, addBookStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    addBookStub
   }
 }
 
@@ -41,5 +54,12 @@ describe('AddBookController', () => {
     jest.spyOn(validationStub, 'validate').mockResolvedValueOnce(new Error())
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call AddBook with correct values', async () => {
+    const { sut, addBookStub } = makeSut()
+    const addBookSpy = jest.spyOn(addBookStub, 'add')
+    await sut.handle(mockFakeRequest())
+    expect(addBookSpy).toHaveBeenCalledWith(mockFakeRequest().body)
   })
 })
