@@ -1,7 +1,7 @@
-import { Book } from '@/domain/models/book'
-import { AddBookParams } from '@/domain/usecases/book/add-book/add-book'
+import { Booking } from '@/domain/models/booking'
+import { AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
 
-export const mockBook = (): Book => {
+export const mockBooking = (): Booking => {
   return {
     id: 'any-id',
     customerName: 'any-customer-name',
@@ -11,8 +11,8 @@ export const mockBook = (): Book => {
   }
 }
 
-export const mockAddBookParams = (): AddBookParams => {
-  const book = mockBook()
+export const mockAddBookingParams = (): AddBookingParams => {
+  const book = mockBooking()
   return {
     customerName: book.customerName,
     professionalId: book.professionalId,

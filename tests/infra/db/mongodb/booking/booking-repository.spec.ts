@@ -1,16 +1,16 @@
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
-import { BookMongoRepository } from '@/infra/db/mongodb/book/book-mongo-repository'
-import { mockAddBookParams } from '@/tests/data/mocks/db-book'
+import { BookingMongoRepository } from '@/infra/db/mongodb/booking/booking-mongo-repository'
+import { mockAddBookingParams } from '@/tests/data/mocks/db-booking'
 
 let bookingsCollection: Collection
 let professionalsCollection: Collection
 
-const makeSut = (): BookMongoRepository => {
-  return new BookMongoRepository()
+const makeSut = (): BookingMongoRepository => {
+  return new BookingMongoRepository()
 }
 
-describe('BookMongoRepository', () => {
+describe('BookingMongoRepository', () => {
   beforeAll(async () => {
 		process.env.MONGO_URL = 'mongodb://localhost:27017/jest'
 		await MongoHelper.connect(process.env.MONGO_URL)
@@ -32,7 +32,7 @@ describe('BookMongoRepository', () => {
 				telefone: '11999999999'
 			})
 
-      const params = Object.assign({}, mockAddBookParams(), { professionalId: professional.ops[0]._id })
+      const params = Object.assign({}, mockAddBookingParams(), { professionalId: professional.ops[0]._id })
 
       const sut = makeSut()
       const booking = await sut.add(params)

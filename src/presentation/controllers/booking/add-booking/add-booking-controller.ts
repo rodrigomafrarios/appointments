@@ -1,11 +1,11 @@
-import { AddBook } from '@/domain/usecases/book/add-book/add-book'
+import { AddBooking } from '@/domain/usecases/booking/add-booking/add-booking'
 import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
 
-export class AddBookController implements Controller {
+export class AddBookingController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly addBook: AddBook  
+    private readonly addBooking: AddBooking  
   ) {}
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -14,7 +14,7 @@ export class AddBookController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.addBook.add(body)
+      await this.addBooking.add(body)
       return created()
     } catch (error) {
       return serverError(error)
