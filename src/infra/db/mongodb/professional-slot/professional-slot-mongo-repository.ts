@@ -1,13 +1,14 @@
 import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
 import { LoadProfessionalSlotParams, LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
+import { UpdateProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/update-professional-slot/update-professional-slot-repository'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { ObjectId } from 'mongodb'
 
-export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepository, LoadProfessionalSlotsRepository {
+export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepository, LoadProfessionalSlotsRepository, UpdateProfessionalSlotRepository {
   async add (data: AddProfessionalSlotParams): Promise<ProfessionalSlot> {
-    const professionalSlot = await this.loadByProfessionalIdAndPeriod(data)
+    const professionalSlot = await this.loadByProfessionalIdAndPeriodBetween(data)
     if (professionalSlot) {
        return professionalSlot
     }
@@ -16,6 +17,22 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
     const result = await collection.insertOne(data)
     return result && MongoHelper.map(result.ops[0]) 
   }
+
+  async updateAvailability (professionalSlot: ProfessionalSlot): Promise<ProfessionalSlot> {
+    const collection = await MongoHelper.getCollection('professional-availability-slots')
+    const result = await collection.findOneAndUpdate({
+      professionalId: new ObjectId(professionalSlot.professionalId),
+      start: professionalSlot.start,
+      end: professionalSlot.end
+    },
+    {
+      $set: {
+        isAvailable: professionalSlot.isAvailable
+      }
+    })
+    return result && MongoHelper.map(result)
+  }
+
   async loadByProfessionalId (id: string): Promise<ProfessionalSlot[]> {
     const collection = await MongoHelper.getCollection('professional-availability-slots')
     const results = await collection.find({
@@ -24,7 +41,28 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
     .toArray()
     return MongoHelper.mapCollection(results) 
   }
-  async loadByProfessionalIdAndPeriod (data: LoadProfessionalSlotParams): Promise<ProfessionalSlot> {
+  async loadByProfessionalIdAndPeriod (data: LoadProfessionalSlotParams): Promise<any> {
+    const collection = await MongoHelper.getCollection('professional-availability-slots')
+    const result = await collection.findOne({
+      professionalId: new ObjectId(data.professionalId),
+      $or: [
+        { 
+          start: {
+            $gte: data.start,
+            $lte: data.end
+          } 
+        },
+        {
+          end: {
+            $gte: data.start,
+            $lte: data.end
+          }
+        }
+      ]
+    })
+    return result
+  }
+  async loadByProfessionalIdAndPeriodBetween (data: LoadProfessionalSlotParams): Promise<any> {
     const collection = await MongoHelper.getCollection('professional-availability-slots')
     const result = await collection.findOne({
       professionalId: new ObjectId(data.professionalId),

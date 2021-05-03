@@ -1,7 +1,10 @@
+import { Booking } from '@/domain/models/booking'
 import { AddBooking, AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
 import { AddBookingController } from '@/presentation/controllers/booking/add-booking/add-booking-controller'
+import { AvailabilitySlotUnavailableError } from '@/presentation/errors/slot-unavailable-error'
 import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, Validation } from '@/presentation/interfaces'
+import { mockBooking } from '@/tests/data/mocks/db-booking'
 import { mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 
 type SutTypes = {
@@ -12,8 +15,8 @@ type SutTypes = {
 
 const makeAddBookStub = (): AddBooking => {
   class AddBookingStub implements AddBooking {
-    async add (params: AddBookingParams): Promise<void> {
-      return undefined
+    async add (params: AddBookingParams): Promise<Booking> {
+      return Promise.resolve(mockBooking())
     }
   }
   return new AddBookingStub()
@@ -61,6 +64,14 @@ describe('AddBookController', () => {
     const addBookSpy = jest.spyOn(addBookingStub, 'add')
     await sut.handle(mockFakeRequest())
     expect(addBookSpy).toHaveBeenCalledWith(mockFakeRequest().body)
+  })
+
+  test('Should return 400 if AddBooking returns null', async () => {
+    const { sut, addBookingStub } = makeSut()
+    jest.spyOn(addBookingStub, 'add').mockResolvedValueOnce(null)
+    const httpResponse = await sut.handle(mockFakeRequest())
+    const { body } = mockFakeRequest()
+    expect(httpResponse).toEqual(badRequest(new AvailabilitySlotUnavailableError(body.start, body.end)))
   })
 
   test('Should throw if AddBooking throws', async () => {

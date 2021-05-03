@@ -1,4 +1,5 @@
 import { AddBooking } from '@/domain/usecases/booking/add-booking/add-booking'
+import { AvailabilitySlotUnavailableError } from '@/presentation/errors/slot-unavailable-error'
 import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
 
@@ -10,11 +11,17 @@ export class AddBookingController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { body } = httpRequest
+      
       const error = await this.validation.validate(body)
       if (error) {
         return badRequest(error)
       }
-      await this.addBooking.add(body)
+
+      const booking = await this.addBooking.add(body)
+      if (!booking) {
+        return badRequest(new AvailabilitySlotUnavailableError(body.start, body.end))
+      }
+      
       return created()
     } catch (error) {
       return serverError(error)

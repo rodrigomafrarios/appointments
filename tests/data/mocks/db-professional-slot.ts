@@ -2,6 +2,7 @@ import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
 import { LoadProfessionalSlotParams, LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
+import { UpdateProfessionalSlotRepository } from '../interfaces/db/professional-slot/update-professional-slot/update-professional-slot-repository'
 
 export const mockProfessionalSlot = (): ProfessionalSlot => {
   return {
@@ -29,6 +30,15 @@ export const mockAddProfessionalSlotRepository = (): AddProfessionalSlotReposito
     }
   }
   return new AddProfessionalSlotRepositoryStub()
+}
+
+export const mockUpdateProfessionalSlotRepository = (): UpdateProfessionalSlotRepository => {
+  class UpdateProfessionalSlotRepositoryStub implements UpdateProfessionalSlotRepository {
+    async updateAvailability (params: ProfessionalSlot): Promise<ProfessionalSlot> {
+      return Promise.resolve(null)
+    }
+  }
+  return new UpdateProfessionalSlotRepositoryStub()
 }
 
 export const mockLoadProfessionalSlotsRepository = (): LoadProfessionalSlotsRepository => {
