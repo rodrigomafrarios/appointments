@@ -19,6 +19,11 @@ export class UpdateProfessionalSlotController implements Controller {
     if (error) {
       return badRequest(error)
     }
+
+    await this.updateProfessionalSlot.update({
+      ...body,
+      professionalId: params.id
+    })
     return null
   }
 }

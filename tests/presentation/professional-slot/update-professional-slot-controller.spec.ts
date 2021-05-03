@@ -56,4 +56,15 @@ describe('UpdateProfessionalSlotController', () => {
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
+
+  test('Should call updateProfessionalSlot with correct values', async () => {
+    const { sut, updateProfessionalSlotStub } = makeSut()
+    const updateProfessionalSlotSpy = jest.spyOn(updateProfessionalSlotStub, 'update')
+    await sut.handle(mockFakeRequest())
+    const httpRequest = mockFakeRequest()
+    expect(updateProfessionalSlotSpy).toHaveBeenCalledWith({ 
+      ...httpRequest.body,
+      professionalId: httpRequest.params.id
+    })
+  })
 })
