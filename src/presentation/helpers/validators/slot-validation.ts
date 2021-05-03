@@ -29,10 +29,9 @@ export class SlotValidation implements Validation {
   }
 
   isPeriodAllowed (start: Date, end: Date): boolean {
-    const isAllowed = (
-      (start.getMinutes() === 0 || start.getMinutes() === 30) && 
-      (end.getMinutes() === 0 || end.getMinutes() === 30)
-      )
+    const isStartPeriodAllowed = (start.getMinutes() === 0 || start.getMinutes() === 30)
+    const isEndPeriodAllowed = (end.getMinutes() === 0 || end.getMinutes() === 30)
+    const isAllowed = (isStartPeriodAllowed && isEndPeriodAllowed)
     return isAllowed
   }
 

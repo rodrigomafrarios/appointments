@@ -3,15 +3,8 @@
       "outDir": "./dist",
       "module": "commonjs",
       "target": "es2019",
-      "lib": [
-        "es2019",
-        "es2020.bigint",
-        "es2020.string",
-        "es2020.symbol.wellknown"
-      ],
       "esModuleInterop": true,
       "allowJs": true,
-      "strictNullChecks": true,
       "sourceMap": true,
       "rootDirs": ["src", "tests"],
       "baseUrl": "src",

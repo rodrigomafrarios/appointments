@@ -1,10 +1,11 @@
 import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
+import { LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { ObjectId } from 'mongodb'
 
-export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepository {
+export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepository, LoadProfessionalSlotsRepository {
   async add (data: AddProfessionalSlotParams): Promise<ProfessionalSlot> {
     const professionalSlot = await this.loadByProfessionalIdAndPeriod(data)
     if (professionalSlot) {
