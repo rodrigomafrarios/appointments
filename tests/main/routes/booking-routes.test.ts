@@ -35,6 +35,7 @@ describe('Booking Routes', () => {
       })
       .expect(201)
     })
+
     test('Should return 400 with wrong professionalId', async () => {
       await request(app)
       .post(`/api/booking`)
@@ -42,6 +43,23 @@ describe('Booking Routes', () => {
         professionalId: 'id',
         customerName: 'Mafra',
         start: "2021-05-01T22:00:00.000Z",
+        end: "2021-05-01T23:00:00.000Z"
+      })
+      .expect(400)
+    })
+
+    test('Should return 400 with invalid slot', async () => {
+      const results = await professionalsCollection.insertOne({
+        name: 'Rodrigo Mafra',
+        telefone: '11999999999'
+      })
+      const id = results.ops[0]._id
+      await request(app)
+      .post(`/api/booking`)
+      .send({
+        professionalId: id,
+        customerName: 'Mafra',
+        start: "2021-05-01T22:33:00.000Z",
         end: "2021-05-01T23:00:00.000Z"
       })
       .expect(400)
