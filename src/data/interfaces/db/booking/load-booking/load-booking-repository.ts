@@ -1,6 +1,6 @@
 import { Booking } from '@/domain/models/booking'
 
-type LoadBookingParams = {
+export type LoadBookingParams = {
   professionalId: string
   start: string
   end: string

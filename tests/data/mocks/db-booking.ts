@@ -1,6 +1,7 @@
 import { Booking } from '@/domain/models/booking'
 import { AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
 import { LoadBookingParams, LoadBookingRepository } from '@/data/interfaces/db/booking/load-booking/load-booking-repository'
+import { DeleteBookingRepository } from '../interfaces/db/booking/delete-booking/delete-booking-repository'
 
 export const mockBooking = (): Booking => {
   return {
@@ -29,4 +30,13 @@ export const mockLoadBookingRepository = (): LoadBookingRepository => {
     }
   }
   return new LoadBookingRepositoryStub()
+}
+
+export const mockDeleteBookingRepository = (): DeleteBookingRepository => {
+  class DeleteBookingRepositoryStub implements DeleteBookingRepository {
+    async delete (params: Booking): Promise<void> {
+      return null
+    }
+  }
+  return new DeleteBookingRepositoryStub()
 }
