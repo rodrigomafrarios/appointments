@@ -1,5 +1,6 @@
 import { Booking } from '@/domain/models/booking'
 import { AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
+import { LoadBookingParams, LoadBookingRepository } from '@/data/interfaces/db/booking/load-booking/load-booking-repository'
 
 export const mockBooking = (): Booking => {
   return {
@@ -19,4 +20,13 @@ export const mockAddBookingParams = (): AddBookingParams => {
     start: book.start,
     end: book.end
   }
+}
+
+export const mockLoadBookingRepository = (): LoadBookingRepository => {
+  class LoadBookingRepositoryStub implements LoadBookingRepository {
+    async loadByProfessionalIdAndPeriod (params: LoadBookingParams): Promise<Booking> {
+      return null
+    }
+  }
+  return new LoadBookingRepositoryStub()
 }
