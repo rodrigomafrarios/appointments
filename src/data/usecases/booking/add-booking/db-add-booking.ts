@@ -1,11 +1,11 @@
 import { AddBookingRepository } from '@/data/interfaces/db/booking/add-booking/add-booking-repository'
-import { LoadProfessionalSlotsAvailableRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-available-repository'
+import { LoadProfessionalSlotAvailableRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-available-repository'
 import { AddBooking, AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
 
 export class DbAddBooking implements AddBooking {
   constructor (
     private readonly addBookingRepository: AddBookingRepository,
-    private readonly loadProfessionalSlotAvailableRepository: LoadProfessionalSlotsAvailableRepository
+    private readonly loadProfessionalSlotAvailableRepository: LoadProfessionalSlotAvailableRepository
   ) {}
 
   async add (params: AddBookingParams): Promise<void> {

@@ -3,14 +3,14 @@ import { Booking } from '@/domain/models/booking'
 import { AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
 import { DbAddBooking } from '@/data/usecases/booking/add-booking/db-add-booking'
 import { mockAddBookingParams, mockBooking } from '@/tests/data/mocks/db-booking'
-import { LoadProfessionalSlot, LoadProfessionalSlotsAvailableRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-available-repository'
+import { LoadProfessionalSlot, LoadProfessionalSlotAvailableRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-available-repository'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 import { mockProfessionalSlot } from '../../mocks/db-professional-slot'
 
 type SutTypes = {
   sut: DbAddBooking
   addBookingRepositoryStub: AddBookingRepository
-  loadProfessionalSlotsAvailableRepositoryStub: LoadProfessionalSlotsAvailableRepository
+  loadProfessionalSlotAvailableRepositoryStub: LoadProfessionalSlotAvailableRepository
 }
 
 const makeAddBookingRepository = (): AddBookingRepository => {
@@ -22,47 +22,58 @@ const makeAddBookingRepository = (): AddBookingRepository => {
   return new AddBookingRepositoryStub()
 }
 
-const makeLoadProfessionalSlotsAvailableRepository = (): LoadProfessionalSlotsAvailableRepository => {
-  class LoadProfessionalSlotsAvailableRepositoryStub implements LoadProfessionalSlotsAvailableRepository {
+const makeLoadProfessionalSlotAvailableRepository = (): LoadProfessionalSlotAvailableRepository => {
+  class LoadProfessionalSlotAvailableRepositoryStub implements LoadProfessionalSlotAvailableRepository {
     async loadProfessionalSlotAvailable (params: LoadProfessionalSlot): Promise<ProfessionalSlot> {
       return Promise.resolve(null)
     }
   }
-  return new LoadProfessionalSlotsAvailableRepositoryStub()
+  return new LoadProfessionalSlotAvailableRepositoryStub()
 }
 
 const makeSut = (): SutTypes => {
   const addBookingRepositoryStub = makeAddBookingRepository()
-  const loadProfessionalSlotsAvailableRepositoryStub = makeLoadProfessionalSlotsAvailableRepository()
-  const sut = new DbAddBooking(addBookingRepositoryStub, loadProfessionalSlotsAvailableRepositoryStub)
+  const loadProfessionalSlotAvailableRepositoryStub = makeLoadProfessionalSlotAvailableRepository()
+  const sut = new DbAddBooking(addBookingRepositoryStub, loadProfessionalSlotAvailableRepositoryStub)
   return {
     sut,
     addBookingRepositoryStub,
-    loadProfessionalSlotsAvailableRepositoryStub
+    loadProfessionalSlotAvailableRepositoryStub
   }
 }
 
 describe('AddBook Usecase', () => {
-  test('Should call AddBookRepository with correct values', async () => {
-    const { sut, addBookingRepositoryStub } = makeSut()
-    const addBookRepositorySpy = jest.spyOn(addBookingRepositoryStub, 'add')
-    await sut.add(mockAddBookingParams())
-    expect(addBookRepositorySpy).toHaveBeenCalledWith(mockAddBookingParams())
-  })
-
   test('Should call loadProfessionalSlotsAvailableRepository with correct values', async () => {
-    const { sut, loadProfessionalSlotsAvailableRepositoryStub } = makeSut()
-    const addBookRepositorySpy = jest.spyOn(loadProfessionalSlotsAvailableRepositoryStub, 'loadProfessionalSlotAvailable')
+    const { sut, loadProfessionalSlotAvailableRepositoryStub } = makeSut()
+    const loadProfessionalSlotAvailableRepositorySpy = jest.spyOn(loadProfessionalSlotAvailableRepositoryStub, 'loadProfessionalSlotAvailable')
     await sut.add(mockAddBookingParams())
-    expect(addBookRepositorySpy).toHaveBeenCalledWith({
+    expect(loadProfessionalSlotAvailableRepositorySpy).toHaveBeenCalledWith({
       ...mockAddBookingParams(),
       isAvailable: true
     })
   })
 
-  test('Should throw if loadProfessionalSlotsAvailableRepository throws', async () => {
-    const { sut, loadProfessionalSlotsAvailableRepositoryStub } = makeSut()
-    jest.spyOn(loadProfessionalSlotsAvailableRepositoryStub, 'loadProfessionalSlotAvailable').mockRejectedValueOnce(new Error())
+  test('Should call AddBookRepository only when theres no professionalSlot available', async () => {
+    const { sut, addBookingRepositoryStub, loadProfessionalSlotAvailableRepositoryStub } = makeSut()
+    jest
+    .spyOn(loadProfessionalSlotAvailableRepositoryStub, 'loadProfessionalSlotAvailable')
+    .mockResolvedValueOnce(null)
+    const addBookRepositorySpy = jest.spyOn(addBookingRepositoryStub, 'add')
+    await sut.add(mockAddBookingParams())
+    expect(addBookRepositorySpy).toHaveBeenCalledWith(mockAddBookingParams())
+  })
+
+  test('Should not call AddBookRepository', async () => {
+    const { sut, loadProfessionalSlotAvailableRepositoryStub } = makeSut()
+    jest
+    .spyOn(loadProfessionalSlotAvailableRepositoryStub, 'loadProfessionalSlotAvailable')
+    .mockResolvedValueOnce(mockProfessionalSlot())
+    await sut.add(mockAddBookingParams())
+  })
+
+  test('Should throw if loadProfessionalSlotAvailableRepositoryStub throws', async () => {
+    const { sut, loadProfessionalSlotAvailableRepositoryStub } = makeSut()
+    jest.spyOn(loadProfessionalSlotAvailableRepositoryStub, 'loadProfessionalSlotAvailable').mockRejectedValueOnce(new Error())
     const promise = sut.add(mockAddBookingParams())
     await expect(promise).rejects.toThrow()
   })
