@@ -60,6 +60,19 @@ describe('UpdateProfessionalSlot Usecase', async () => {
     expect(deleteBookingSpy).toHaveBeenCalledWith(mockBooking())
   })
 
+  test('Should throw if DeleteBookingRepository throws', async () => {
+    const { sut, loadBookingRepositoryStub, deleteBookingRepositoryStub } = makeSut()
+    jest
+    .spyOn(loadBookingRepositoryStub, 'loadByProfessionalIdAndPeriod')
+    .mockResolvedValueOnce(mockBooking())
+    jest.spyOn(deleteBookingRepositoryStub, 'delete').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const promise = sut.update(mockProfessionalSlot())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call UpdateProfessionalSlotRepository with correct values', async () => {
     const { sut, updateProfessionalSlotRepositoryStub } = makeSut()
     const updateProfessionalSlotSpy = jest.spyOn(updateProfessionalSlotRepositoryStub, 'update')
