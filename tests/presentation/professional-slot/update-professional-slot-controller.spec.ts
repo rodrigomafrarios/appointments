@@ -4,8 +4,9 @@ import { Validation } from '@/presentation/interfaces'
 import { mockFakeRequest, mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 import { UpdateProfessionalSlotController } from '@/presentation/controllers/professional-slot/update-professional-slot/update-professional-slot-controller'
 import MockDate from 'mockdate'
-import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
+import { mockProfessionalSlot } from '@/tests/data/mocks/db-professional-slot'
 
 type SutTypes = {
   sut: UpdateProfessionalSlotController
@@ -75,5 +76,12 @@ describe('UpdateProfessionalSlotController', () => {
     })
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut, updateProfessionalSlotStub } = makeSut()
+    jest.spyOn(updateProfessionalSlotStub, 'update').mockResolvedValueOnce(mockProfessionalSlot())
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse).toEqual(ok(mockProfessionalSlot()))
   })
 })
