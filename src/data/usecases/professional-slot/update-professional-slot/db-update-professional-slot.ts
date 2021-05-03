@@ -5,7 +5,7 @@ import { UpdateProfessionalSlot } from '@/domain/usecases/professional-slot/upda
 export class DbUpdateProfessionalSlot implements UpdateProfessionalSlot {
   constructor (private readonly updateProfessionalSlotRepository: UpdateProfessionalSlotRepository) {}
   async update (params: ProfessionalSlot): Promise<ProfessionalSlot> {
-    await this.updateProfessionalSlotRepository.update(params)
-    return null
+    const professionalSlot = await this.updateProfessionalSlotRepository.update(params)
+    return professionalSlot
   }
 }

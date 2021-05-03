@@ -30,4 +30,14 @@ describe('UpdateProfessionalSlot Usecase', async () => {
     await sut.update(mockProfessionalSlot())
     expect(updateProfessionalSlotSpy).toHaveBeenCalledWith(mockProfessionalSlot())
   })
+
+  test('Should throw if UpdateProfessionalSlotRepository throws', async () => {
+    const { sut, updateProfessionalSlotRepositoryStub } = makeSut()
+    jest.spyOn(updateProfessionalSlotRepositoryStub, 'update').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const promise = sut.update(mockProfessionalSlot())
+    await expect(promise).rejects.toThrow()
+  })
 })
