@@ -21,7 +21,7 @@ beforeEach(async () => {
   await professionalsCollection.deleteMany({})
 })
 
-describe('POST /professional/:professional-id/availability-slot', () => {
+describe('POST /professional/:id/availability-slot', () => {
   test('Should return 201 on success', async () => {
     const results = await professionalsCollection.insertOne({
       name: 'Rodrigo Mafra',

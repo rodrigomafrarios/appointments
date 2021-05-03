@@ -13,7 +13,7 @@ export class AddProfessionalSlotController implements Controller {
       const { body, params } = httpRequest
       const error = await this.validation.validate({
         ...body,
-        id: params.id
+        professionalId: params.id
       })
 
       if (error) {

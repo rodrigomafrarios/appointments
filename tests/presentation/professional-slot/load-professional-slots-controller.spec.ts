@@ -46,7 +46,7 @@ describe('LoadProfessionalSlotsController', () => {
     await sut.handle(mockFakeRequest())
     expect(validationSpy).toHaveBeenCalledWith({
       ...mockFakeRequest().body,
-      id: mockFakeRequest().params.id
+      professionalId: mockFakeRequest().params.id
     })
   })
 

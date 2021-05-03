@@ -5,7 +5,7 @@ import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
 
 export class ProfessionalIdValidation implements Validation {
   async validate (params: any): Promise<Error | undefined> {
-    const { id: professionalId } = params
+    const { professionalId } = params
     if (!ObjectId.isValid(professionalId)) {
       return new InvalidParamError('professionalId')
     }
