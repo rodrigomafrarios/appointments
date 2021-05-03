@@ -33,18 +33,21 @@ describe('UpdateProfessionalSlot Usecase', async () => {
   afterAll(() => {
     MockDate.reset()
   })
-  test('Should call UpdateProfessionalSlotRepository with correct values', async () => {
-    const { sut, updateProfessionalSlotRepositoryStub } = makeSut()
-    const updateProfessionalSlotSpy = jest.spyOn(updateProfessionalSlotRepositoryStub, 'update')
-    await sut.update(mockProfessionalSlot())
-    expect(updateProfessionalSlotSpy).toHaveBeenCalledWith(mockProfessionalSlot())
-  })
-
   test('Should call LoadBookingRepository with correct values', async () => {
     const { sut, loadBookingRepositoryStub } = makeSut()
     const loadBookingSpy = jest.spyOn(loadBookingRepositoryStub, 'loadByProfessionalIdAndPeriod')
     await sut.update(mockProfessionalSlot())
     expect(loadBookingSpy).toHaveBeenCalledWith(mockProfessionalSlot())
+  })
+
+  test('Should throw if LoadBookingRepository throws', async () => {
+    const { sut, loadBookingRepositoryStub } = makeSut()
+    jest.spyOn(loadBookingRepositoryStub, 'loadByProfessionalIdAndPeriod').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const promise = sut.update(mockProfessionalSlot())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call DeleteBookingRepository with correct values', async () => {
@@ -55,6 +58,13 @@ describe('UpdateProfessionalSlot Usecase', async () => {
     const deleteBookingSpy = jest.spyOn(deleteBookingRepositoryStub, 'delete')
     await sut.update(mockProfessionalSlot())
     expect(deleteBookingSpy).toHaveBeenCalledWith(mockBooking())
+  })
+
+  test('Should call UpdateProfessionalSlotRepository with correct values', async () => {
+    const { sut, updateProfessionalSlotRepositoryStub } = makeSut()
+    const updateProfessionalSlotSpy = jest.spyOn(updateProfessionalSlotRepositoryStub, 'update')
+    await sut.update(mockProfessionalSlot())
+    expect(updateProfessionalSlotSpy).toHaveBeenCalledWith(mockProfessionalSlot())
   })
 
   test('Should throw if UpdateProfessionalSlotRepository throws', async () => {
