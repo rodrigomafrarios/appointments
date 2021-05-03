@@ -35,5 +35,16 @@ describe('Booking Routes', () => {
       })
       .expect(201)
     })
+    test('Should return 400 with wrong professionalId', async () => {
+      await request(app)
+      .post(`/api/booking`)
+      .send({
+        professionalId: 'id',
+        customerName: 'Mafra',
+        start: "2021-05-01T22:00:00.000Z",
+        end: "2021-05-01T23:00:00.000Z"
+      })
+      .expect(400)
+    })
   })
 })
