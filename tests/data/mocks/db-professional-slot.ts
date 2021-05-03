@@ -37,6 +37,9 @@ export const mockUpdateProfessionalSlotRepository = (): UpdateProfessionalSlotRe
     async updateAvailability (params: ProfessionalSlot): Promise<ProfessionalSlot> {
       return Promise.resolve(null)
     }
+    async update (params: ProfessionalSlot): Promise<ProfessionalSlot> {
+      return null
+    }
   }
   return new UpdateProfessionalSlotRepositoryStub()
 }
