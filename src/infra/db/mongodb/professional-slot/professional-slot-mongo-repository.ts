@@ -1,5 +1,5 @@
 import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
-import { LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
+import { LoadProfessionalSlotParams, LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
@@ -24,7 +24,7 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
     .toArray()
     return MongoHelper.mapCollection(results) 
   }
-  async loadByProfessionalIdAndPeriod (data: AddProfessionalSlotParams): Promise<ProfessionalSlot> {
+  async loadByProfessionalIdAndPeriod (data: LoadProfessionalSlotParams): Promise<ProfessionalSlot> {
     const collection = await MongoHelper.getCollection('professional-availability-slots')
     const result = await collection.findOne({
       professionalId: new ObjectId(data.professionalId),

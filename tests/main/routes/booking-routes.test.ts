@@ -1,8 +1,9 @@
 import request from 'supertest'
 import app from '@/main/config/app'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { Collection, ObjectId } from 'mongodb'
+import { Collection } from 'mongodb'
 
+let professionalAvailabilitySlotsCollection: Collection
 let professionalsCollection: Collection
 
 describe('Booking Routes', () => {
@@ -14,6 +15,9 @@ describe('Booking Routes', () => {
     await MongoHelper.disconnect()
   })
   beforeEach(async () => {
+    professionalAvailabilitySlotsCollection = await MongoHelper.getCollection('professional-availability-slots')
+	  await professionalAvailabilitySlotsCollection.deleteMany({})
+
     professionalsCollection = await MongoHelper.getCollection('professionals')
     await professionalsCollection.deleteMany({})
   })
