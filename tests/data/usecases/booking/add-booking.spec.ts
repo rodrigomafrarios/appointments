@@ -60,6 +60,13 @@ describe('AddBook Usecase', () => {
     })
   })
 
+  test('Should throw if loadProfessionalSlotsAvailableRepository throws', async () => {
+    const { sut, loadProfessionalSlotsAvailableRepositoryStub } = makeSut()
+    jest.spyOn(loadProfessionalSlotsAvailableRepositoryStub, 'loadProfessionalSlotAvailable').mockRejectedValueOnce(new Error())
+    const promise = sut.add(mockAddBookingParams())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should throw if AddBookRepository throws', async () => {
     const { sut, addBookingRepositoryStub } = makeSut()
     jest.spyOn(addBookingRepositoryStub, 'add').mockRejectedValueOnce(new Error())
