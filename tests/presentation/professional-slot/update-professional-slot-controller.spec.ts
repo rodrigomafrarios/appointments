@@ -4,7 +4,7 @@ import { Validation } from '@/presentation/interfaces'
 import { mockFakeRequest, mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 import { UpdateProfessionalSlotController } from '@/presentation/controllers/professional-slot/update-professional-slot/update-professional-slot-controller'
 import MockDate from 'mockdate'
-import { badRequest } from '@/presentation/helpers/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helpers/http/http-helper'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
 
 type SutTypes = {
@@ -66,5 +66,14 @@ describe('UpdateProfessionalSlotController', () => {
       ...httpRequest.body,
       professionalId: httpRequest.params.id
     })
+  })
+
+  test('Should return 500 if updateProfessionalSlot throws', async () => {
+    const { sut, updateProfessionalSlotStub } = makeSut()
+    jest.spyOn(updateProfessionalSlotStub, 'update').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(mockFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
