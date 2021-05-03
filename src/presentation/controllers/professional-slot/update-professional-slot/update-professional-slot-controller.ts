@@ -1,4 +1,5 @@
 import { UpdateProfessionalSlot } from '@/domain/usecases/professional-slot/update-professional-slot/update-professional-slot'
+import { badRequest } from '@/presentation/helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
 
 export class UpdateProfessionalSlotController implements Controller {
@@ -10,10 +11,14 @@ export class UpdateProfessionalSlotController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     
     const { body, params } = httpRequest
-    await this.validation.validate({
+    const error = await this.validation.validate({
       ...body,
       professionalId: params.id
     })
+
+    if (error) {
+      return badRequest(error)
+    }
     return null
   }
 }
