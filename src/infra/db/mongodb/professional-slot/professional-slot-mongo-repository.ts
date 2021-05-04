@@ -67,6 +67,7 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
     .toArray()
     return MongoHelper.mapCollection(results) 
   }
+
   async loadByProfessionalIdAndPeriod (data: LoadProfessionalSlotParams): Promise<any> {
     const collection = await MongoHelper.getCollection('professional-availability-slots')
     const result = await collection.findOne({
@@ -88,6 +89,7 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
     })
     return result
   }
+  
   async loadByProfessionalIdAndPeriodBetween (data: LoadProfessionalSlotParams): Promise<any> {
     const collection = await MongoHelper.getCollection('professional-availability-slots')
     const result = await collection.findOne({

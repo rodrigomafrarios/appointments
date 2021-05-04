@@ -3,7 +3,7 @@ import { DbAddProfessionalSlot } from '@/data/usecases/professional-slot/add-pro
 import MockDate from 'mockdate'
 import { mockAddProfessionalSlotParams, mockAddProfessionalSlotRepository } from '@/tests/data/mocks/db-professional-slot'
 
-interface SutTypes {
+type SutTypes = {
   sut: DbAddProfessionalSlot
   addProfessionalSlotRepositoryStub: AddProfessionalSlotRepository
 }

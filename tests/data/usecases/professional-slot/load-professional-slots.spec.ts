@@ -3,7 +3,7 @@ import { mockLoadProfessionalSlotsRepository, mockProfessionalSlot } from '@/tes
 import { DbLoadProfessionalSlots } from '@/data/usecases/professional-slot/load-professional-slots/db-load-professional-slots'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 
-interface SutTypes {
+type SutTypes = {
   sut: DbLoadProfessionalSlots
   loadProfessionalSlotsRepositoryStub: LoadProfessionalSlotsRepository
 }
