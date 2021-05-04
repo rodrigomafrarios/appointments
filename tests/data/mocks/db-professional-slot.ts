@@ -2,7 +2,8 @@ import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
 import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
 import { LoadProfessionalSlotParams, LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
-import { UpdateProfessionalSlotRepository } from '../interfaces/db/professional-slot/update-professional-slot/update-professional-slot-repository'
+import { UpdateProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/update-professional-slot/update-professional-slot-repository'
+import { DeleteProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/delete-professional-slot/delete-professional-slot-repository'
 
 export const mockProfessionalSlot = (): ProfessionalSlot => {
   return {
@@ -42,6 +43,15 @@ export const mockUpdateProfessionalSlotRepository = (): UpdateProfessionalSlotRe
     }
   }
   return new UpdateProfessionalSlotRepositoryStub()
+}
+
+export const mockDeleteProfessionalSlotRepository = (): DeleteProfessionalSlotRepository => {
+  class DeleteProfessionalSlotRepositoryStub implements DeleteProfessionalSlotRepository {
+    async delete (params: ProfessionalSlot): Promise<ProfessionalSlot> {
+      return null
+    }
+  }
+  return new DeleteProfessionalSlotRepositoryStub()
 }
 
 export const mockLoadProfessionalSlotsRepository = (): LoadProfessionalSlotsRepository => {
