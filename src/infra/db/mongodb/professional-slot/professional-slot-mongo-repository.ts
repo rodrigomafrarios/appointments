@@ -18,6 +18,22 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
     return result && MongoHelper.map(result.ops[0]) 
   }
 
+  async update (professionalSlot: ProfessionalSlot): Promise<ProfessionalSlot> {
+    const collection = await MongoHelper.getCollection('professional-availability-slots')
+    const result = await collection.findOneAndUpdate({
+      _id: new ObjectId(professionalSlot.id)
+    },
+    {
+      $set: {
+        professionalId: new ObjectId(professionalSlot.professionalId),
+        start: professionalSlot.start,
+        end: professionalSlot.end,
+        isAvailable: professionalSlot.isAvailable
+      }
+    })
+    return result && MongoHelper.map(result)
+  }
+
   async updateAvailability (professionalSlot: ProfessionalSlot): Promise<ProfessionalSlot> {
     const collection = await MongoHelper.getCollection('professional-availability-slots')
     const result = await collection.findOneAndUpdate({

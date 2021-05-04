@@ -28,6 +28,6 @@ export class BookingMongoRepository implements AddBookingRepository, DeleteBooki
       start: params.start,
       end: params.end,
     })
-    return booking
+    return booking && MongoHelper.map(booking)
   }
 }

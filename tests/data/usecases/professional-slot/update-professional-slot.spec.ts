@@ -26,7 +26,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('UpdateProfessionalSlot Usecase', async () => {
+describe('UpdateProfessionalSlot Usecase', () => {
   beforeAll(() => {
     MockDate.set(new Date())
   })
