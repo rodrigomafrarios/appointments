@@ -41,4 +41,24 @@ describe('BookingMongoRepository', () => {
 			expect(booking.professionalId).toBe(professional.ops[0]._id)
     })
   })
+	
+	describe('delete()', () => {
+		test('Should delete a booking', async () => {
+			const professional = await professionalsCollection.insertOne({
+				name: 'Rodrigo Mafra',
+				telefone: '11999999999'
+			})
+
+      const params = Object.assign({}, mockAddBookingParams(), { professionalId: professional.ops[0]._id })
+
+      const sut = makeSut()
+      const booking = await sut.add(params)
+
+			await sut.delete(booking)
+
+			const findBooking = await sut.loadByProfessionalIdAndPeriod(booking)
+
+			expect(findBooking).toBe(null)
+		})
+	})
 })
