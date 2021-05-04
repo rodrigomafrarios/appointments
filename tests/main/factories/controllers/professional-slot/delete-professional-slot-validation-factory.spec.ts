@@ -1,10 +1,10 @@
-import { makeAddProfessionalSlotValidation } from '@/main/factories/controllers/add-professional-slot/add-professional-slot-validation-factory'
+import { makeAddProfessionalSlotValidation } from '@/main/factories/controllers/professional-slot/add-professional-slot/add-professional-slot-validation-factory'
 import { Validation } from '@/presentation/interfaces'
 import { ProfessionalIdValidation } from '@/presentation/helpers/validators/professional-id-validation'
 import { RequiredFieldValidation } from '@/presentation/helpers/validators/required-field-validation'
 import { SlotValidation } from '@/presentation/helpers/validators/slot-validation'
 import { ValidationComposite } from '@/presentation/helpers/validators/validation-composite'
-import { makeDeleteProfessionalSlotValidation } from '@/main/factories/controllers/delete-professiona-slot/delete-professional-slot-validation-factory'
+import { makeDeleteProfessionalSlotValidation } from '@/main/factories/controllers/professional-slot/delete-professiona-slot/delete-professional-slot-validation-factory'
 jest.mock('@/presentation/helpers/validators/validation-composite')
 
 describe('DeleteProfessionalSlotValidation Factory', () => {

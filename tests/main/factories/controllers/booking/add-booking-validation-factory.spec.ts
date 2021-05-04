@@ -1,4 +1,4 @@
-import { makeAddBookingValidation } from '@/main/factories/controllers/add-booking/add-booking-validation-factory'
+import { makeAddBookingValidation } from '@/main/factories/controllers/booking/add-booking/add-booking-validation-factory'
 import { Validation } from '@/presentation/interfaces'
 import { ProfessionalIdValidation } from '@/presentation/helpers/validators/professional-id-validation'
 import { RequiredFieldValidation } from '@/presentation/helpers/validators/required-field-validation'

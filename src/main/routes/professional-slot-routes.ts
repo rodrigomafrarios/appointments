@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import { adaptRoute } from '@/main/adapters/express-routes-adapter'
-import { makeAddProfessionalSlotController } from '@/main/factories/controllers/add-professional-slot/add-professional-slot-factory'
-import { makeLoadProfessionalSlotsController } from '@/main/factories/controllers/load-professional-slots/load-professional-slots-factory'
-import { makeUpdateProfessionalSlotController } from '@/main/factories/controllers/update-professional-slot/update-professional-slot-controller-factory'
-import { makeDeleteProfessionalSlotController } from '@/main/factories/controllers/delete-professiona-slot/delete-professional-slot-controller-factory'
+import { makeAddProfessionalSlotController } from '@/main/factories/controllers/professional-slot/add-professional-slot/add-professional-slot-factory'
+import { makeLoadProfessionalSlotsController } from '@/main/factories/controllers/professional-slot/load-professional-slots/load-professional-slots-factory'
+import { makeUpdateProfessionalSlotController } from '@/main/factories/controllers/professional-slot/update-professional-slot/update-professional-slot-controller-factory'
+import { makeDeleteProfessionalSlotController } from '@/main/factories/controllers/professional-slot/delete-professiona-slot/delete-professional-slot-controller-factory'
 
 export default (router: Router): void => {
 	router.post('/professional/:id/availability-slot', adaptRoute(makeAddProfessionalSlotController()))
