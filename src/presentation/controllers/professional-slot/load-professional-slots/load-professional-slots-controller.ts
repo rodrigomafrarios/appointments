@@ -35,6 +35,7 @@ export class LoadProfessionalSlotsController implements Controller {
       }
 
       return ok(professionalSlots)
+
     } catch (error) {
       return serverError(error)
     }
