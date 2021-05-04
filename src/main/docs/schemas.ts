@@ -1,7 +1,15 @@
-import { addProfessionalSlotSchema, loadProfessionalSlotsSchema, errorSchema } from './schemas/index'
+import {
+	addProfessionalSlotSchema,
+	loadProfessionalSlotsSchema,
+	updateProfessionalSlotSchema,
+	deleteProfessionalSlotSchema,
+	errorSchema
+} from './schemas/index'
 
 export default {
 	error: errorSchema,
 	addProfessionalSlot: addProfessionalSlotSchema,
-	loadProfessionalSlots: loadProfessionalSlotsSchema
+	loadProfessionalSlots: loadProfessionalSlotsSchema,
+	updateProfessionalSlot: updateProfessionalSlotSchema,
+	deleteProfessionalSlot: deleteProfessionalSlotSchema
 }
