@@ -74,4 +74,22 @@ describe('ProfessionalSlotMongoRepository', () => {
 			expect(results.isAvailable).toBe(false)
 		})
 	})
+
+	describe('delete()', () => {
+		test('Should delete availability slot', async () => {
+			const sut = makeSut()
+			const professional = await professionalsCollection.insertOne({
+				name: 'Rodrigo Mafra',
+				telefone: '11999999999'
+			})
+			const params = Object.assign({}, mockAddProfessionalSlotParams(), { professionalId: professional.ops[0]._id })
+      let professionalSlot = await sut.add(params)
+
+			professionalSlot = Object.assign({}, professionalSlot, { isAvailable: false })
+			await sut.delete(professionalSlot)
+			
+			const results = await sut.loadByProfessionalIdAndPeriod(professionalSlot)
+			expect(results).toBe(null)
+		})
+	})
 })

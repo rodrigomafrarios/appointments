@@ -1,4 +1,5 @@
 import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
+import { DeleteProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/delete-professional-slot/delete-professional-slot-repository'
 import { LoadProfessionalSlotParams, LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
 import { UpdateProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/update-professional-slot/update-professional-slot-repository'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
@@ -6,7 +7,7 @@ import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/a
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { ObjectId } from 'mongodb'
 
-export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepository, LoadProfessionalSlotsRepository, UpdateProfessionalSlotRepository {
+export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepository, LoadProfessionalSlotsRepository, UpdateProfessionalSlotRepository, DeleteProfessionalSlotRepository {
   async add (data: AddProfessionalSlotParams): Promise<ProfessionalSlot> {
     const professionalSlot = await this.loadByProfessionalIdAndPeriodBetween(data)
     if (professionalSlot) {
@@ -46,6 +47,17 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
         isAvailable: professionalSlot.isAvailable
       }
     })
+    return result && MongoHelper.map(result)
+  }
+
+  async delete (params: ProfessionalSlot): Promise<ProfessionalSlot> {
+    const collection = await MongoHelper.getCollection('professional-availability-slots')
+    const result = await collection.deleteOne({
+      professionalId: params.professionalId,
+      start: params.start,
+      end: params.end
+    })
+    
     return result && MongoHelper.map(result)
   }
 
