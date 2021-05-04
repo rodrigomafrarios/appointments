@@ -1,11 +1,11 @@
 import { AddBookingRepository } from '@/data/interfaces/db/booking/add-booking/add-booking-repository'
 import { DeleteBookingRepository } from '@/data/interfaces/db/booking/delete-booking/delete-booking-repository'
-import { LoadBookingParams } from '@/data/interfaces/db/booking/load-booking/load-booking-repository'
+import { LoadBookingParams, LoadBookingRepository } from '@/data/interfaces/db/booking/load-booking/load-booking-repository'
 import { Booking } from '@/domain/models/booking'
 import { AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
-export class BookingMongoRepository implements AddBookingRepository, DeleteBookingRepository {
+export class BookingMongoRepository implements AddBookingRepository, DeleteBookingRepository, LoadBookingRepository {
   async add (data: AddBookingParams): Promise<Booking> {
     const collection = await MongoHelper.getCollection('bookings')
     const result = await collection.insertOne(data)
