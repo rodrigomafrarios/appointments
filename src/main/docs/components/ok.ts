@@ -3,7 +3,7 @@ export const ok = {
 	content: {
 		'application/json': {
 			schema: {
-				$ref: '#/schemas/account'
+				$ref: '#/schemas/loadProfessionalSlots'
 			}
 		}
 	}
