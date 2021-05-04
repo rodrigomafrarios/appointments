@@ -104,4 +104,16 @@ describe('PUT /professional/:id/availability-slot/:availability-slot-id', () => 
     })
     .expect(200)
   })
+
+  test('Should return 400 when parameters are wrong', async () => {
+    await request(app)
+    .put(`/api//professional/123/availability-slot/12345`)
+    .send({
+      professionalId: 'id',
+      start: '2021-05-04T07:00:00.000Z',
+      end: '2021-05-04T08:00:00.000Z',
+      isAvailable: false
+    })
+    .expect(400)
+  })
 })

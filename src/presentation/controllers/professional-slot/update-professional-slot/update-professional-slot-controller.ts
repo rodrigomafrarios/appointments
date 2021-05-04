@@ -11,7 +11,6 @@ export class UpdateProfessionalSlotController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { body, params } = httpRequest
-      console.log(params)
       const error = await this.validation.validate({
         ...body,
         professionalId: params.id
