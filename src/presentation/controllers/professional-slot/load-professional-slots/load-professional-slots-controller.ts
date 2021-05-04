@@ -1,11 +1,20 @@
 import { LoadProfessionalSlots } from '@/domain/usecases/professional-slot/load-professional-slots/load-professional-slots'
-import { badRequest, noContent, ok, serverError } from '@/presentation/helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
+import { 
+  Controller,
+  HttpRequest,
+  HttpResponse,
+  Validation,
+  badRequest,
+  noContent,
+  ok,
+  serverError
+} from './load-professional-slots-controller-deps'
 
 export class LoadProfessionalSlotsController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly loadProfessionalSlots: LoadProfessionalSlots) {}
+    private readonly loadProfessionalSlots: LoadProfessionalSlots
+  ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {

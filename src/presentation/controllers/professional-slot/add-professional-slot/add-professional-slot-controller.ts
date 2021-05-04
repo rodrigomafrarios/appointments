@@ -1,6 +1,13 @@
 import { AddProfessionalSlot } from '@/domain/usecases/professional-slot/add-professional-slot/add-professional-slot'
-import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
-import { HttpRequest, HttpResponse, Controller, Validation } from './add-professional-slot-controller-deps'
+import { 
+  HttpRequest,
+  HttpResponse,
+  Controller,
+  Validation,
+  badRequest,
+  created,
+  serverError
+} from './add-professional-slot-controller-deps'
 
 export class AddProfessionalSlotController implements Controller {
   constructor (

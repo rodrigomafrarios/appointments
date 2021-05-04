@@ -1,6 +1,13 @@
 import { UpdateProfessionalSlot } from '@/domain/usecases/professional-slot/update-professional-slot/update-professional-slot'
-import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
+import {
+  badRequest,
+  ok,
+  serverError,
+  Controller,
+  HttpRequest,
+  HttpResponse,
+  Validation
+} from './update-professional-slot-controller-deps'
 
 export class UpdateProfessionalSlotController implements Controller {
   constructor (
