@@ -138,10 +138,19 @@ describe('DELETE /professional/:id/availability-slot/:availabilitySlotId', () =>
     await request(app)
     .delete(`/api//professional/${id}/availability-slot/${availabilitySlotId}`)
     .send({
-      professionalId: id,
       start: '2021-05-04T07:00:00.000Z',
       end: '2021-05-04T08:00:00.000Z'
     })
     .expect(200)
+  })
+
+  test('Should return 400 when parameters are wrong', async () => {
+    await request(app)
+    .delete(`/api//professional/123/availability-slot/12345`)
+    .send({
+      start: '2021-05-04T07:00:00.000Z',
+      end: '2021-05-04T08:00:00.000Z'
+    })
+    .expect(400)
   })
 })
