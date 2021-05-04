@@ -1,7 +1,7 @@
 export const loadProfessionalSlotsPath = {
 	get: {
 		tags: ['Slots de disponibilidade'],
-		summary: 'API para obter slots de disponibilidade do profissional separados por períodos',
+		summary: 'API para obter slots de disponibilidade separados por períodos do profissional',
 		parameters: [{
 			in: 'path',
 			name: 'id',
