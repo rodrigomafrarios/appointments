@@ -1,5 +1,5 @@
 import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
-import { DbAddProfessionalSlot } from '@/data/usecases/professional-slot/db-add-professional-slot'
+import { DbAddProfessionalSlot } from '@/data/usecases/professional-slot/add-professional-slot/db-add-professional-slot'
 import MockDate from 'mockdate'
 import { mockAddProfessionalSlotParams, mockAddProfessionalSlotRepository } from '@/tests/data/mocks/db-professional-slot'
 
