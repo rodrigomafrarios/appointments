@@ -16,7 +16,8 @@ export const mockFakeRequest = (): HttpRequest => {
       end: new Date().toISOString()
     },
     params: {
-      id: '123'
+      id: '123',
+      availabilitySlotId: '123'
     }
   }
 }

@@ -52,10 +52,8 @@ export class ProfessionalSlotMongoRepository implements AddProfessionalSlotRepos
 
   async delete (params: ProfessionalSlot): Promise<ProfessionalSlot> {
     const collection = await MongoHelper.getCollection('professional-availability-slots')
-    const result = await collection.deleteOne({
-      professionalId: params.professionalId,
-      start: params.start,
-      end: params.end
+    const result = await collection.findOneAndDelete({
+      _id: new ObjectId(params.id)
     })
     
     return result && MongoHelper.map(result)

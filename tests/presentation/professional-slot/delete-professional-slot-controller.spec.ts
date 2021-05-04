@@ -63,8 +63,10 @@ describe('DeleteProfessionalSlotController', () => {
     await sut.handle(mockFakeRequest())
     const httpRequest = mockFakeRequest()
     expect(deleteProfessionalSlotSpy).toHaveBeenCalledWith({ 
-      ...httpRequest.body,
-      professionalId: httpRequest.params.id
+      start: httpRequest.body.start,
+      end: httpRequest.body.end,
+      professionalId: httpRequest.params.id,
+      id: httpRequest.params.availabilitySlotId
     })
   })
 
