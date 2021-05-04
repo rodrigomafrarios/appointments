@@ -76,3 +76,32 @@ describe('GET /professional/:id/availability-slots', () => {
     .expect(204)
   })
 })
+
+describe('PUT /professional/:id/availability-slot/:availability-slot-id', () => {
+  test('Should return 200 on success', async () => {
+    const results = await professionalsCollection.insertOne({
+      name: 'Rodrigo Mafra',
+      telefone: '11999999999'
+    })
+    const id = results.ops[0]._id
+
+    const addResults = await professionalAvailabilitySlotsCollection.insertOne({
+      professionalId: new ObjectId(id),
+      start: '2021-05-04T07:00:00.000Z',
+      end: '2021-05-04T08:00:00.000Z',
+      isAvailable: true
+    })
+
+    const availabilitySlotId = addResults.ops[0]._id
+
+    await request(app)
+    .put(`/api//professional/${id}/availability-slot/${availabilitySlotId}`)
+    .send({
+      professionalId: id,
+      start: '2021-05-04T07:00:00.000Z',
+      end: '2021-05-04T08:00:00.000Z',
+      isAvailable: false
+    })
+    .expect(200)
+  })
+})
