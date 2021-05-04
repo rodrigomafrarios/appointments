@@ -3,6 +3,7 @@ import {
 	loadProfessionalSlotsSchema,
 	updateProfessionalSlotSchema,
 	deleteProfessionalSlotSchema,
+	addBookingSchema,
 	errorSchema
 } from './schemas/index'
 
@@ -11,5 +12,6 @@ export default {
 	addProfessionalSlot: addProfessionalSlotSchema,
 	loadProfessionalSlots: loadProfessionalSlotsSchema,
 	updateProfessionalSlot: updateProfessionalSlotSchema,
-	deleteProfessionalSlot: deleteProfessionalSlotSchema
+	deleteProfessionalSlot: deleteProfessionalSlotSchema,
+	addBooking: addBookingSchema
 }
