@@ -1,6 +1,6 @@
 {
   "name": "appointments",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "prepare": "husky install",
     "add:lint-staged": "npx mrm lint-staged",
     "hooks:pre-commit": "npm run add:lint-staged && npx husky add .husky/pre-commit 'npx lint-staged'",
+    "hooks:pre-push": "npx husky add .husky/pre-push 'npm run test:ci'",
     "hooks:add": "npm run prepare && npm run hooks:pre-commit",
     "build": "sucrase ./src -d ./dist --transforms typescript,imports && tsc -p tsconfig-build.json",
     "build:watch": "sucrase ./src -d ./dist --transforms typescript,imports && tsc -p tsconfig-build.json -w",
