@@ -1,5 +1,6 @@
 import { AddProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/add-professional-slot-repository'
 import { DeleteProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/delete-professional-slot/delete-professional-slot-repository'
+import { LoadProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/load-professional-slot/load-professional-slot-repository'
 import { LoadProfessionalSlotParams, LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
 import { UpdateProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/update-professional-slot/update-professional-slot-repository'
 import { ProfessionalSlot } from '@/domain/models/professional-slot'
@@ -11,6 +12,7 @@ import { ObjectId } from 'mongodb'
 export class ProfessionalSlotMongoRepository implements 
 AddProfessionalSlotRepository,
 LoadProfessionalSlotsRepository,
+LoadProfessionalSlotRepository,
 UpdateProfessionalSlotRepository,
 DeleteProfessionalSlotRepository 
 {
