@@ -14,15 +14,6 @@ export const deleteProfessionalSlotPath = {
 			required: true,
 			description: 'ID do slot de disponibilidade do profissional'
 		}],
-		requestBody: {
-			content: {
-				'application/json': {
-					schema: {
-						$ref: '#/schemas/deleteProfessionalSlot'
-					}
-				}
-			}
-		},
 		responses: {
 			200: {},
 			400: {

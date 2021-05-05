@@ -10,7 +10,6 @@ export class DeleteProfessionalSlotController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const { params } = httpRequest
-      console.log(params)
       const error = await this.validation.validate({
         professionalId: params.id,
         id: params.availabilitySlotId 
