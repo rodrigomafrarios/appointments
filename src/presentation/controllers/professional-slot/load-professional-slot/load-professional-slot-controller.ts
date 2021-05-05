@@ -28,7 +28,7 @@ export class LoadProfessionalSlotController implements Controller {
         return badRequest(error)
       }
   
-      const professionalSlot = await this.loadProfessionalSlot.loadById(params.id)
+      const professionalSlot = await this.loadProfessionalSlot.loadById(params.availabilitySlotId)
       
       if (!professionalSlot) {
         return noContent()
