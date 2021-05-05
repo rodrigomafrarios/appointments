@@ -19,7 +19,8 @@
     "build:watch": "sucrase ./src -d ./dist --transforms typescript,imports && tsc -p tsconfig-build.json -w",
     "debug": "nodemon -L --watch ./src --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "start": "sucrase-node ./src/main/server.ts",
-    "up": "npm run build && docker-compose up -d",
+    "up:mongodb": "docker-compose up -d mongo",
+    "up:all": "npm run build && docker-compose up -d",
     "down": "docker-compose down"
   },
   "repository": {
