@@ -20,7 +20,8 @@ export class UpdateProfessionalSlotController implements Controller {
       const { body, params } = httpRequest
       const error = await this.validation.validate({
         ...body,
-        professionalId: params.id
+        professionalId: params.id,
+        id: params.availabilitySlotId
       })
   
       if (error) {

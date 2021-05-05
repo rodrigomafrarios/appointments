@@ -39,6 +39,23 @@ describe('ProfessionalSlotMongoRepository', () => {
 			expect(slot.professionalId).toBe(professional.ops[0]._id)
 			expect(slot.isAvailable).toBe(true)
     })
+
+		test('Should return a existent professional availability slot', async () => {
+      const sut = makeSut()
+			const professional = await professionalsCollection.insertOne({
+				name: 'Rodrigo Mafra',
+				telefone: '11999999999'
+			})
+			const params = Object.assign({}, mockAddProfessionalSlotParams(), { professionalId: professional.ops[0]._id })
+
+			collection.insertOne(params)
+
+      const slot = await sut.add(params)
+			expect(slot).toBeTruthy()
+			expect(slot.id).toBeTruthy()
+			expect(slot.professionalId).toStrictEqual(professional.ops[0]._id)
+			expect(slot.isAvailable).toBe(true)
+    })
   })
 
 	describe('loadByProfessionalId()', () => {
@@ -71,7 +88,7 @@ describe('ProfessionalSlotMongoRepository', () => {
 			await sut.update(professionalSlot)
 			
 			const results = await sut.loadByProfessionalIdAndPeriod(professionalSlot)
-			expect(results.isAvailable).toBe(false)
+			expect(results[0].isAvailable).toBe(false)
 		})
 	})
 
@@ -89,7 +106,7 @@ describe('ProfessionalSlotMongoRepository', () => {
 			await sut.delete(professionalSlot)
 			
 			const results = await sut.loadByProfessionalIdAndPeriod(professionalSlot)
-			expect(results).toBe(null)
+			expect(results).toEqual([])
 		})
 	})
 })

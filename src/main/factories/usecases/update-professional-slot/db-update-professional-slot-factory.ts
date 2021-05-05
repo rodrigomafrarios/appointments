@@ -5,5 +5,5 @@ import { ProfessionalSlotMongoRepository } from '@/infra/db/mongodb/professional
 export const makeDbUpdateProfessionalSlot = (): DbUpdateProfessionalSlot => {
   const professionalSlotRepository = new ProfessionalSlotMongoRepository()
   const bookingRepository = new BookingMongoRepository()
-  return new DbUpdateProfessionalSlot(professionalSlotRepository, bookingRepository, bookingRepository)
+  return new DbUpdateProfessionalSlot(professionalSlotRepository, professionalSlotRepository, bookingRepository, bookingRepository)
 }

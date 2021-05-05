@@ -25,8 +25,8 @@ export class AddBookingController implements Controller {
         return badRequest(error)
       }
 
-      const booking = await this.addBooking.add(body)
-      if (!booking) {
+      const wasCreated = await this.addBooking.add(body)
+      if (!wasCreated) {
         return badRequest(new AvailabilitySlotUnavailableError(body.start, body.end))
       }
       

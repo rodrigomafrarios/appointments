@@ -4,6 +4,8 @@ import { AddProfessionalSlotParams } from '@/domain/usecases/professional-slot/a
 import { LoadProfessionalSlotParams, LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
 import { UpdateProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/update-professional-slot/update-professional-slot-repository'
 import { DeleteProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/delete-professional-slot/delete-professional-slot-repository'
+import { LoadProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/load-professional-slot/load-professional-slot-repository'
+import { DeleteProfessionalSlotParams } from '@/domain/usecases/professional-slot/delete-professional-slot/delete-professional-slot'
 
 export const mockProfessionalSlot = (): ProfessionalSlot => {
   return {
@@ -47,7 +49,7 @@ export const mockUpdateProfessionalSlotRepository = (): UpdateProfessionalSlotRe
 
 export const mockDeleteProfessionalSlotRepository = (): DeleteProfessionalSlotRepository => {
   class DeleteProfessionalSlotRepositoryStub implements DeleteProfessionalSlotRepository {
-    async delete (params: ProfessionalSlot): Promise<ProfessionalSlot> {
+    async delete (params: DeleteProfessionalSlotParams): Promise<ProfessionalSlot> {
       return null
     }
   }
@@ -61,9 +63,18 @@ export const mockLoadProfessionalSlotsRepository = (): LoadProfessionalSlotsRepo
       professionalSlots.push(mockProfessionalSlot())
       return Promise.resolve(professionalSlots)
     }
-    async loadByProfessionalIdAndPeriod (params: LoadProfessionalSlotParams): Promise<ProfessionalSlot> {
+    async loadByProfessionalIdAndPeriod (params: LoadProfessionalSlotParams): Promise<ProfessionalSlot[]> {
       return Promise.resolve(null)
     }
   }
   return new LoadProfessionalSlotsRepositoryStub()
+}
+
+export const mockLoadProfessionalSlotRepository = (): LoadProfessionalSlotRepository => {
+  class LoadProfessionalSlotRepositoryStub implements LoadProfessionalSlotRepository {
+    async loadById (id: string): Promise<ProfessionalSlot> {
+      return Promise.resolve(null)
+    }
+  }
+  return new LoadProfessionalSlotRepositoryStub()
 }

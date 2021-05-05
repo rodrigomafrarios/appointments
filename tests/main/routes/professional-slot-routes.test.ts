@@ -95,7 +95,7 @@ describe('PUT /professional/:id/availability-slot/:availability-slot-id', () => 
     const availabilitySlotId = addResults.ops[0]._id
 
     await request(app)
-    .put(`/api//professional/${id}/availability-slot/${availabilitySlotId}`)
+    .put(`/api/professional/${id}/availability-slot/${availabilitySlotId}`)
     .send({
       professionalId: id,
       start: '2021-05-04T07:00:00.000Z',
@@ -107,7 +107,7 @@ describe('PUT /professional/:id/availability-slot/:availability-slot-id', () => 
 
   test('Should return 400 when parameters are wrong', async () => {
     await request(app)
-    .put(`/api//professional/123/availability-slot/12345`)
+    .put(`/api/professional/123/availability-slot/12345`)
     .send({
       professionalId: 'id',
       start: '2021-05-04T07:00:00.000Z',
@@ -136,21 +136,13 @@ describe('DELETE /professional/:id/availability-slot/:availabilitySlotId', () =>
     const availabilitySlotId = addResults.ops[0]._id
 
     await request(app)
-    .delete(`/api//professional/${id}/availability-slot/${availabilitySlotId}`)
-    .send({
-      start: '2021-05-04T07:00:00.000Z',
-      end: '2021-05-04T08:00:00.000Z'
-    })
+    .delete(`/api/professional/${id}/availability-slot/${availabilitySlotId}`)
     .expect(200)
   })
 
   test('Should return 400 when parameters are wrong', async () => {
     await request(app)
-    .delete(`/api//professional/123/availability-slot/12345`)
-    .send({
-      start: '2021-05-04T07:00:00.000Z',
-      end: '2021-05-04T08:00:00.000Z'
-    })
+    .delete(`/api/professional/123/availability-slot/12345`)
     .expect(400)
   })
 })

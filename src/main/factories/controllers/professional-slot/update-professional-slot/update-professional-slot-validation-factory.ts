@@ -6,7 +6,7 @@ import { ValidationComposite } from '@/presentation/helpers/validators/validatio
 
 export const makeUpdateProfessionalSlotValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-	for (const field of ['start', 'end']) {
+	for (const field of ['start', 'end', 'professionalId', 'id']) {
 		validations.push(new RequiredFieldValidation(field))
 	}
 

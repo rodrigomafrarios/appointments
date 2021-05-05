@@ -1,10 +1,8 @@
-import { Booking } from '@/domain/models/booking'
 import { AddBooking, AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
 import { AddBookingController } from '@/presentation/controllers/booking/add-booking/add-booking-controller'
 import { AvailabilitySlotUnavailableError } from '@/presentation/errors/slot-unavailable-error'
 import { badRequest, created, serverError } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, Validation } from '@/presentation/interfaces'
-import { mockBooking } from '@/tests/data/mocks/db-booking'
 import { mockValidator } from '@/tests/presentation/mocks/mock-professional-slot'
 
 type SutTypes = {
@@ -15,8 +13,8 @@ type SutTypes = {
 
 const makeAddBookStub = (): AddBooking => {
   class AddBookingStub implements AddBooking {
-    async add (params: AddBookingParams): Promise<Booking> {
-      return Promise.resolve(mockBooking())
+    async add (params: AddBookingParams): Promise<boolean> {
+      return false
     }
   }
   return new AddBookingStub()
@@ -66,9 +64,9 @@ describe('AddBookController', () => {
     expect(addBookSpy).toHaveBeenCalledWith(mockFakeRequest().body)
   })
 
-  test('Should return 400 if AddBooking returns null', async () => {
+  test('Should return 400 if AddBooking not create anything', async () => {
     const { sut, addBookingStub } = makeSut()
-    jest.spyOn(addBookingStub, 'add').mockResolvedValueOnce(null)
+    jest.spyOn(addBookingStub, 'add').mockResolvedValueOnce(false)
     const httpResponse = await sut.handle(mockFakeRequest())
     const { body } = mockFakeRequest()
     expect(httpResponse).toEqual(badRequest(new AvailabilitySlotUnavailableError(body.start, body.end)))
@@ -82,7 +80,8 @@ describe('AddBookController', () => {
   })
 
   test('Should return 201 on success', async () => {
-    const { sut } = makeSut()
+    const { sut, addBookingStub } = makeSut()
+    jest.spyOn(addBookingStub, 'add').mockResolvedValueOnce(true)
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse).toEqual(created())
   })

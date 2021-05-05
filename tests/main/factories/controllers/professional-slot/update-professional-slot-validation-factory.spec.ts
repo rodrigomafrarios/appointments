@@ -10,7 +10,7 @@ describe('UpdateProfessionalSlotValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
 		makeUpdateProfessionalSlotValidation()
 		const validations: Validation[] = []
-    for (const field of ['start', 'end']) {
+    for (const field of ['start', 'end', 'professionalId', 'id']) {
       validations.push(new RequiredFieldValidation(field))
     }
 

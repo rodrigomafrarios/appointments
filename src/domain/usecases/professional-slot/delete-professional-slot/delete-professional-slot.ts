@@ -1,5 +1,8 @@
-import { ProfessionalSlot } from '@/domain/models/professional-slot'
+export type DeleteProfessionalSlotParams = {
+  id: string
+  professionalId: string
+}
 
 export interface DeleteProfessionalSlot {
-  delete: (params: ProfessionalSlot) => Promise<void>
+  delete: (params: DeleteProfessionalSlotParams) => Promise<void>
 }

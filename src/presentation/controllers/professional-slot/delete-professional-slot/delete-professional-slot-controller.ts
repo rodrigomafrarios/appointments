@@ -1,6 +1,5 @@
 import { DeleteProfessionalSlot } from '@/domain/usecases/professional-slot/delete-professional-slot/delete-professional-slot'
-import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse, Validation } from '@/presentation/interfaces'
+import { Controller, HttpRequest, HttpResponse, Validation, badRequest, ok, serverError } from './delete-professional-slot-controller-deps'
 
 export class DeleteProfessionalSlotController implements Controller {
   constructor (
@@ -10,10 +9,11 @@ export class DeleteProfessionalSlotController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { body, params } = httpRequest
+      const { params } = httpRequest
+      console.log(params)
       const error = await this.validation.validate({
-        ...body,
-        professionalId: params.id
+        professionalId: params.id,
+        id: params.availabilitySlotId 
       })
   
       if (error) {
@@ -21,7 +21,6 @@ export class DeleteProfessionalSlotController implements Controller {
       }
   
       await this.deleteProfessionalSlot.delete({
-        ...body,
         professionalId: params.id,
         id: params.availabilitySlotId
       })

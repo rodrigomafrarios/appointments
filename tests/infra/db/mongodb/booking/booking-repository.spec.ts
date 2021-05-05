@@ -1,5 +1,5 @@
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { BookingMongoRepository } from '@/infra/db/mongodb/booking/booking-mongo-repository'
 import { mockAddBookingParams } from '@/tests/data/mocks/db-booking'
 
@@ -36,9 +36,10 @@ describe('BookingMongoRepository', () => {
 
       const sut = makeSut()
       const booking = await sut.add(params)
+			
       expect(booking).toBeTruthy()
       expect(booking.id).toBeTruthy()
-			expect(booking.professionalId).toBe(professional.ops[0]._id)
+			expect(booking.professionalId).toStrictEqual(params.professionalId)
     })
   })
 
@@ -50,7 +51,7 @@ describe('BookingMongoRepository', () => {
 			})
 	
 			const params = Object.assign({}, mockAddBookingParams(), { professionalId: professional.ops[0]._id })
-	
+
 			const sut = makeSut()
 			const booking = await sut.add(params)
 			const findBooking = await sut.loadByProfessionalIdAndPeriod(booking)

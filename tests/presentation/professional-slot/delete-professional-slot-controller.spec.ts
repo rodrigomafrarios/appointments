@@ -43,30 +43,36 @@ describe('DeleteProfessionalSlotController', () => {
   test('Should call validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
+    const { params } = mockFakeRequest()
+  
     await sut.handle(mockFakeRequest())
     expect(validateSpy).toHaveBeenCalledWith({
-      ...mockFakeRequest().body,
-      professionalId: mockFakeRequest().params.id
+      professionalId: params.id,
+      id: params.availabilitySlotId
     })
   })
 
   test('Should return 400 if validation fails', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validate').mockResolvedValueOnce(new MissingParamError('any_field'))
-    const httpResponse = await sut.handle(mockFakeRequest())
+    const { params } = mockFakeRequest()
+    const httpResponse = await sut.handle({
+      params: {
+        professionalId: params.id,
+        id: params.availabilitySlotId
+      }
+    })
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
 
   test('Should call DeleteProfessionalSlot with correct values', async () => {
     const { sut, deleteProfessionalSlotStub } = makeSut()
     const deleteProfessionalSlotSpy = jest.spyOn(deleteProfessionalSlotStub, 'delete')
+    const { params } = mockFakeRequest()
     await sut.handle(mockFakeRequest())
-    const httpRequest = mockFakeRequest()
     expect(deleteProfessionalSlotSpy).toHaveBeenCalledWith({ 
-      start: httpRequest.body.start,
-      end: httpRequest.body.end,
-      professionalId: httpRequest.params.id,
-      id: httpRequest.params.availabilitySlotId
+      professionalId: params.id,
+      id: params.availabilitySlotId
     })
   })
 
@@ -75,13 +81,25 @@ describe('DeleteProfessionalSlotController', () => {
     jest.spyOn(deleteProfessionalSlotStub, 'delete').mockImplementationOnce(() => {
       throw new Error()
     })
-    const httpResponse = await sut.handle(mockFakeRequest())
+    const { params } = mockFakeRequest()
+    const httpResponse = await sut.handle({
+      params: {
+        professionalId: params.id,
+        id: params.availabilitySlotId
+      }
+    })
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle(mockFakeRequest())
+    const { params } = mockFakeRequest()
+    const httpResponse = await sut.handle({
+      params: {
+        professionalId: params.id,
+        id: params.availabilitySlotId
+      }
+    })
     expect(httpResponse).toEqual(ok(null))
   })
 })

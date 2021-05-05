@@ -1,7 +1,6 @@
 import { AddBookingRepository } from '@/data/interfaces/db/booking/add-booking/add-booking-repository'
 import { LoadProfessionalSlotsRepository } from '@/data/interfaces/db/professional-slot/load-professional-slots/load-professional-slots-repository'
 import { UpdateProfessionalSlotRepository } from '@/data/interfaces/db/professional-slot/update-professional-slot/update-professional-slot-repository'
-import { Booking } from '@/domain/models/booking'
 import { AddBooking, AddBookingParams } from '@/domain/usecases/booking/add-booking/add-booking'
 
 export class DbAddBooking implements AddBooking {
@@ -11,15 +10,23 @@ export class DbAddBooking implements AddBooking {
     private readonly updateProfessionalSlotRepository: UpdateProfessionalSlotRepository
   ) {}
 
-  async add (params: AddBookingParams): Promise<Booking> {
-    const professionalSlot = await this.loadProfessionalSlotsRepository.loadByProfessionalIdAndPeriod({
+  async add (params: AddBookingParams): Promise<boolean> {
+    
+    const professionalSlots = await this.loadProfessionalSlotsRepository.loadByProfessionalIdAndPeriod({
       ...params,
       isAvailable: true
     })
-    
-    if (professionalSlot && professionalSlot.isAvailable) {
-      const booking = await this.addBookingRepository.add(params)
-      if (booking) {
+
+    let wasCreated = false
+
+    if (!professionalSlots) {
+      return wasCreated
+    }
+
+    for(const professionalSlot of professionalSlots) {
+      if (professionalSlot && professionalSlot.isAvailable) {
+        wasCreated = true
+        await this.addBookingRepository.add(params)
         await this.updateProfessionalSlotRepository.updateAvailability({
           id: professionalSlot.id,
           professionalId: professionalSlot.professionalId,
@@ -27,8 +34,9 @@ export class DbAddBooking implements AddBooking {
           end: professionalSlot.end,
           isAvailable: false
         })
-        return booking
       }
     }
+
+    return wasCreated
   }
 }

@@ -65,7 +65,7 @@ describe('AddBook Usecase', () => {
 
   test('Should not call AddBookRepository when theres no professionalSlot avaiable', async () => {
     const { sut, loadProfessionalSlotsRepositoryStub } = makeSut()
-    const results = Object.assign({}, mockProfessionalSlot(), { isAvailable: false })
+    const results = [Object.assign({}, mockProfessionalSlot(), { isAvailable: false })]
     jest
     .spyOn(loadProfessionalSlotsRepositoryStub, 'loadByProfessionalIdAndPeriod')
     .mockResolvedValueOnce(results)
@@ -76,7 +76,7 @@ describe('AddBook Usecase', () => {
     const { sut, addBookingRepositoryStub, loadProfessionalSlotsRepositoryStub } = makeSut()
     jest
     .spyOn(loadProfessionalSlotsRepositoryStub, 'loadByProfessionalIdAndPeriod')
-    .mockResolvedValueOnce(mockProfessionalSlot())
+    .mockResolvedValueOnce([mockProfessionalSlot()])
     const addBookRepositorySpy = jest.spyOn(addBookingRepositoryStub, 'add')
     await sut.add(mockAddBookingParams())
     expect(addBookRepositorySpy).toHaveBeenCalledWith(mockAddBookingParams())
@@ -86,7 +86,7 @@ describe('AddBook Usecase', () => {
     const { sut, addBookingRepositoryStub, loadProfessionalSlotsRepositoryStub } = makeSut()
     jest
     .spyOn(loadProfessionalSlotsRepositoryStub, 'loadByProfessionalIdAndPeriod')
-    .mockResolvedValueOnce(mockProfessionalSlot())
+    .mockResolvedValueOnce([mockProfessionalSlot()])
     jest.spyOn(addBookingRepositoryStub, 'add').mockRejectedValueOnce(new Error())
     const promise = sut.add(mockAddBookingParams())
     await expect(promise).rejects.toThrow()
@@ -96,7 +96,7 @@ describe('AddBook Usecase', () => {
     const { sut, updateProfessionalSlotRepositoryStub, loadProfessionalSlotsRepositoryStub, addBookingRepositoryStub } = makeSut()
     jest
     .spyOn(loadProfessionalSlotsRepositoryStub, 'loadByProfessionalIdAndPeriod')
-    .mockResolvedValueOnce(mockProfessionalSlot())
+    .mockResolvedValueOnce([mockProfessionalSlot()])
     jest
     .spyOn(addBookingRepositoryStub, 'add')
     .mockResolvedValueOnce(mockBooking())
