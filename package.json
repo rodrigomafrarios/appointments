@@ -1,6 +1,6 @@
 {
   "name": "appointments",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,11 +14,13 @@
     "add:lint-staged": "npx mrm lint-staged",
     "hooks:pre-commit": "npm run add:lint-staged && npx husky add .husky/pre-commit 'npx lint-staged'",
     "hooks:pre-push": "npx husky add .husky/pre-push 'npm run test:ci'",
-    "hooks:add": "npm run prepare && npm run hooks:pre-commit",
+    "hooks:add": "npm run prepare && npm run hooks:pre-commit && npm run hooks:pre-push",
     "build": "sucrase ./src -d ./dist --transforms typescript,imports && tsc -p tsconfig-build.json",
     "build:watch": "sucrase ./src -d ./dist --transforms typescript,imports && tsc -p tsconfig-build.json -w",
     "debug": "nodemon -L --watch ./src --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
-    "start": "sucrase-node ./src/main/server.ts"
+    "start": "sucrase-node ./src/main/server.ts",
+    "up": "npm run build && docker-compose up -d",
+    "down": "docker-compose down"
   },
   "repository": {
     "type": "git",
