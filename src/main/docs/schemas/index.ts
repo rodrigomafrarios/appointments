@@ -1,4 +1,5 @@
 export * from './add-professional-slot-schema'
+export * from './load-professional-slot-schema'
 export * from './load-professional-slots-schema'
 export * from './update-professional-slot-schema'
 export * from './add-booking-schema'

@@ -37,6 +37,46 @@ describe('POST /professional/:id/availability-slot', () => {
     .expect(201)
   })
 })
+describe('GET /professional/:id/availability-slot/:availabilitySlotId', () => {
+  test('Should return 200 on success', async () => {
+    const results = await professionalsCollection.insertOne({
+      name: 'Rodrigo Mafra',
+      telefone: '11999999999'
+    })
+    const id = results.ops[0]._id
+
+    const professionalSlot = await professionalAvailabilitySlotsCollection.insertOne({
+      professionalId: new ObjectId(id),
+      start: '2021-05-04T07:00:00.000Z',
+      end: '2021-05-04T08:00:00.000Z',
+      isAvailable: true
+    })
+
+    const availabilitySlotId = professionalSlot.ops[0]._id
+
+    await request(app)
+    .get(`/api/professional/${id}/availability-slot/${availabilitySlotId}`)
+    .expect(200)
+  })
+
+  test('Should return 204 on no content', async () => {
+    const results = await professionalsCollection.insertOne({
+      name: 'Rodrigo Mafra',
+      telefone: '11999999999'
+    })
+    const id = results.ops[0]._id
+
+    await request(app)
+    .get(`/api/professional/${id}/availability-slot/${id}`)
+    .expect(204)
+  })
+
+  test('Should return 400 if a wrong professional id provided ', async () => {
+    await request(app)
+    .get(`/api/professional/123/availability-slot/123`)
+    .expect(400)
+  })
+})
 
 describe('GET /professional/:id/availability-slots', () => {
   test('Should return 200 on success', async () => {

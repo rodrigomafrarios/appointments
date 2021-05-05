@@ -74,6 +74,22 @@ describe('ProfessionalSlotMongoRepository', () => {
 		})
 	})
 
+	describe('loadById()', () => {
+		test('Should load a availability slot of professional', async () => {
+			const sut = makeSut()
+			const professional = await professionalsCollection.insertOne({
+				name: 'Rodrigo Mafra',
+				telefone: '11999999999'
+			})
+			const params = Object.assign({}, mockAddProfessionalSlotParams(), { professionalId: professional.ops[0]._id })
+      const addSlot = await sut.add(params)
+
+			const slot = await sut.loadById(addSlot.id)
+			expect(slot).toBeTruthy()
+			expect(slot.id).toStrictEqual(addSlot.id)
+		})
+	})
+
 	describe('update()', () => {
 		test('Should update availability slot', async () => {
 			const sut = makeSut()
