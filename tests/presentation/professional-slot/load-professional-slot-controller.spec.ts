@@ -45,7 +45,7 @@ describe('LoadProfessionalSlotsController', () => {
     const validationSpy = jest.spyOn(validationStub, 'validate')
     await sut.handle(mockFakeRequest())
     expect(validationSpy).toHaveBeenCalledWith({
-      ...mockFakeRequest().body,
+      id: mockFakeRequest().params.availabilitySlotId,
       professionalId: mockFakeRequest().params.id
     })
   })

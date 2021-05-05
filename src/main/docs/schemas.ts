@@ -1,5 +1,6 @@
 import {
 	addProfessionalSlotSchema,
+	loadProfessionalSlotSchema,
 	loadProfessionalSlotsSchema,
 	updateProfessionalSlotSchema,
 	addBookingSchema,
@@ -9,6 +10,7 @@ import {
 export default {
 	error: errorSchema,
 	addProfessionalSlot: addProfessionalSlotSchema,
+	loadProfessionalSlot: loadProfessionalSlotSchema,
 	loadProfessionalSlots: loadProfessionalSlotsSchema,
 	updateProfessionalSlot: updateProfessionalSlotSchema,
 	addBooking: addBookingSchema
